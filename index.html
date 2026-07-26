@@ -236,7 +236,6 @@
                 <option value="essay">Essay / Uraian</option>
             </select>
             
-            <!-- FITUR BARU: Input Bobot Soal -->
             <label style="font-weight: 600; display:block; margin-bottom: 5px;">Bobot Nilai (Skor Maksimal):</label>
             <input type="number" id="soal-bobot" class="form-control" placeholder="Contoh: 10" value="10" required>
             
@@ -284,7 +283,7 @@
                 <textarea id="answer-input" class="form-control" rows="4" placeholder="Ketik jawabanmu di sini..."></textarea>
             </div>
             
-            <!-- FITUR BARU: Navigasi Soal -->
+            <!-- Navigasi Soal -->
             <div class="nav-buttons">
                 <button class="btn" style="background: var(--text-muted);" id="btn-prev" onclick="navigasiSoal(-1)"><i class="fas fa-arrow-left"></i> Sebelumnya</button>
                 <button class="btn btn-primary" id="btn-next" onclick="navigasiSoal(1)">Selanjutnya <i class="fas fa-arrow-right"></i></button>
@@ -302,12 +301,10 @@
         let bankSoalLokal = []; 
         let examInterval;
         let isExamRunning = false;
-        
-        // FITUR BARU: Variabel penyimpan state ujian
         let indexSoalAktif = 0;
-        let jawabanSiswa = {}; // Format: { 0: "A", 1: "Jawaban isian...", ... }
+        let jawabanSiswa = {};
 
-        // ================= SISTEM LOGIN (Tetap Sama) =================
+        // ================= SISTEM LOGIN =================
         function toggleLoginType() {
             const role = document.getElementById('login-role').value;
             const inputId = document.getElementById('login-id');
@@ -365,10 +362,13 @@
 
         function masukSebagaiSiswa(nama, nis) {
             sessionStorage.setItem('siswa_nama', nama);
+            sessionStorage.setItem('siswa_nis', nis);
+            
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('sidebar').style.display = 'flex';
             document.getElementById('menu-dashboard').style.display = 'none';
             document.getElementById('menu-bank-soal').style.display = 'none';
+            
             navigate('ujian');
             alert(`Halo, ${nama}! Semangat ujiannya.`);
         }
@@ -404,7 +404,6 @@
                 };
             }
 
-            // FITUR BARU: Menyimpan Bobot
             const payload = {
                 id: Date.now(),
                 jenis: jenis,
@@ -428,15 +427,15 @@
             document.getElementById('opsi-d').value = ""; document.getElementById('soal-bobot').value = "10";
         }
 
-        // ================= SISTEM UJIAN & PERHITUNGAN NILAI =================
+        // ================= SISTEM UJIAN & SINKRONISASI GAS =================
         function startExam() {
             const token = document.getElementById('exam-token').value;
             if(!token) return alert("Masukkan token ujian terlebih dahulu!");
             if(bankSoalLokal.length === 0) return alert("Belum ada soal ujian! Guru harus membuat soal dulu.");
 
             isExamRunning = true;
-            jawabanSiswa = {}; // Reset jawaban
-            indexSoalAktif = 0; // Mulai dari soal pertama
+            jawabanSiswa = {}; 
+            indexSoalAktif = 0; 
             
             document.getElementById('exam-interface').style.display = 'block';
             document.getElementById('exam-student-name').innerText = sessionStorage.getItem('siswa_nama') || "Siswa Uji Coba";
@@ -456,7 +455,6 @@
             tampilkanSoal(indexSoalAktif);
         }
 
-        // FITUR BARU: Menampilkan soal berdasarkan Index (Mendukung Navigasi)
         function tampilkanSoal(index) {
             const soal = bankSoalLokal[index];
             const labelJenis = soal.jenis.replace(/_/g, ' ').toUpperCase();
@@ -472,7 +470,7 @@
             
             let htmlSoal = imageHtml + `<div>${soal.soal}</div>`;
             const areaTextarea = document.getElementById('container-answer-input');
-            const jawabanTersimpan = jawabanSiswa[index] || ""; // Ambil jawaban jika sudah pernah diisi
+            const jawabanTersimpan = jawabanSiswa[index] || ""; 
             
             if (soal.opsi) {
                 // Mode Pilihan Ganda
@@ -493,7 +491,7 @@
                 // Mode Isian / Essay
                 areaTextarea.style.display = 'block';
                 const inputArea = document.getElementById('answer-input');
-                inputArea.value = jawabanTersimpan; // Restore jawaban text
+                inputArea.value = jawabanTersimpan; 
                 
                 if (soal.jenis === 'isian') {
                     inputArea.rows = 2; inputArea.placeholder = "Ketik jawaban singkat di sini...";
@@ -504,7 +502,6 @@
             
             document.getElementById('current-q-text').innerHTML = htmlSoal;
             
-            // Atur Visibilitas Tombol Navigasi
             document.getElementById('btn-prev').style.visibility = (index === 0) ? "hidden" : "visible";
             if(index === bankSoalLokal.length - 1) {
                 document.getElementById('btn-next').style.display = "none";
@@ -515,9 +512,10 @@
             }
         }
 
-        // FITUR BARU: Menyimpan jawaban saat berpindah soal
         function simpanJawabanSementara() {
             const soal = bankSoalLokal[indexSoalAktif];
+            if(!soal) return;
+            
             if (soal.opsi) {
                 const radioTerpilih = document.querySelector('input[name="jawaban_siswa_radio"]:checked');
                 if (radioTerpilih) jawabanSiswa[indexSoalAktif] = radioTerpilih.value;
@@ -528,56 +526,68 @@
         }
 
         function navigasiSoal(arah) {
-            simpanJawabanSementara(); // Simpan yang sedang dikerjakan sebelum pindah
+            simpanJawabanSementara(); 
             indexSoalAktif += arah;
             tampilkanSoal(indexSoalAktif);
         }
 
-        // FITUR BARU: Mesin Koreksi & Perhitungan Nilai Akhir
-        function submitExam(force = false) {
+        async function submitExam(force = false) {
             if(!force && !confirm("Yakin ingin menyelesaikan ujian? Pastikan semua soal telah dijawab.")) return;
             
             clearInterval(examInterval);
             isExamRunning = false;
-            simpanJawabanSementara(); // Simpan jawaban di soal terakhir
+            simpanJawabanSementara(); 
             
             let totalSkorDiperoleh = 0;
             let totalSkorMaksimal = 0;
             let adaEssay = false;
 
-            // Proses Koreksi Otomatis
             bankSoalLokal.forEach((soal, index) => {
                 let bobot = soal.bobot || 0;
                 totalSkorMaksimal += bobot;
-                
                 let jwbSiswa = jawabanSiswa[index] || "";
                 
                 if (soal.jenis === 'pilihan_ganda' || soal.jenis === 'pilihan_ganda_hots') {
-                    if (jwbSiswa === soal.kunci) {
-                        totalSkorDiperoleh += bobot;
-                    }
+                    if (jwbSiswa === soal.kunci) totalSkorDiperoleh += bobot;
                 } else if (soal.jenis === 'isian') {
-                    // Koreksi Isian (Tidak sensitif huruf besar/kecil & spasi awal/akhir)
-                    if (jwbSiswa.trim().toLowerCase() === soal.kunci.trim().toLowerCase()) {
-                        totalSkorDiperoleh += bobot;
-                    }
+                    if (jwbSiswa.trim().toLowerCase() === soal.kunci.trim().toLowerCase()) totalSkorDiperoleh += bobot;
                 } else if (soal.jenis === 'essay') {
                     adaEssay = true;
-                    // Essay sementara skor 0 karena butuh koreksi manual oleh Guru
                 }
             });
 
-            // Rumus Nilai Akhir: (Skor Diperoleh / Skor Maksimal) x 100
             let nilaiAkhir = (totalSkorMaksimal > 0) ? (totalSkorDiperoleh / totalSkorMaksimal) * 100 : 0;
-            nilaiAkhir = Math.round(nilaiAkhir * 100) / 100; // Pembulatan 2 angka desimal
+            nilaiAkhir = Math.round(nilaiAkhir * 100) / 100; 
 
-            // Tampilkan Hasil Ujian ke Siswa
-            let pesanHasil = `UJIAN SELESAI!\n\nSkor Anda: ${totalSkorDiperoleh} dari total maksimal ${totalSkorMaksimal}\nNilai Akhir: ${nilaiAkhir}`;
-            if(adaEssay) {
-                pesanHasil += `\n\n*Catatan: Nilai ini belum termasuk soal Essay karena soal Essay akan dikoreksi secara manual oleh Guru.`;
+            // Kirim Nilai ke Google Apps Script (GAS)
+            const btnSubmit = document.getElementById('btn-submit');
+            if(btnSubmit) {
+                btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan Nilai...';
+                btnSubmit.disabled = true;
             }
-            
-            alert(pesanHasil);
+
+            const payloadData = {
+                action: "simpanNilai",
+                nis: sessionStorage.getItem('siswa_nis') || "-",
+                nama: sessionStorage.getItem('siswa_nama') || "Siswa Uji Coba",
+                nilai: nilaiAkhir,
+                jawaban: jawabanSiswa
+            };
+
+            try {
+                await fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payloadData),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                
+                let pesanHasil = `UJIAN SELESAI!\n\nSkor Anda: ${totalSkorDiperoleh} dari total maksimal ${totalSkorMaksimal}\nNilai Akhir: ${nilaiAkhir}`;
+                if(adaEssay) pesanHasil += `\n\n*Catatan: Nilai ini belum termasuk soal Essay karena butuh koreksi manual oleh Guru.`;
+                alert(pesanHasil);
+                
+            } catch(e) {
+                alert("Nilai berhasil dihitung (" + nilaiAkhir + "), namun periksa koneksi internet Anda untuk memastikannya tersimpan ke server Guru.");
+            }
             
             document.getElementById('exam-token').value = ""; 
             document.getElementById('exam-interface').style.display = "none";
@@ -585,6 +595,7 @@
         }
     </script>
     
+    <!-- FOOTER IDENTITAS SEKOLAH -->
     <div class="footer-sekolah">
         <span style="color: var(--primary-color); font-weight: bold;">SANG21 CBT</span> | 
         Aplikasi ini dikembangkan oleh <strong>TIM Inovasi UPTD SDN 21 Sanggalea</strong>
