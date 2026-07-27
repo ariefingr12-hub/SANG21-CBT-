@@ -204,7 +204,7 @@
         <section id="bank-soal" class="page-section">
             <h2>Bank Soal</h2>
             <button class="btn btn-primary" onclick="document.getElementById('modal-soal').style.display='flex'">+ Tambah Soal</button>
-            <div id="list-soal" style="margin-top: 20px;">Belum ada soal ditambahkan.</div>
+            <div id="list-soal" style="margin-top: 20px; font-weight: 500; color: var(--text-muted);">Belum ada soal ditambahkan.</div>
         </section>
 
         <section id="ujian" class="page-section">
@@ -227,6 +227,20 @@
     <div id="modal-soal" class="modal">
         <div class="modal-content">
             <h3 style="margin-top: 0;">Tambah Soal Baru</h3>
+            
+            <!-- FITUR BARU: PILIH KELAS -->
+            <label style="font-weight: 600; display:block; margin-bottom: 5px;">Kelas:</label>
+            <select id="soal-kelas" class="form-control" required>
+                <option value="5A">Kelas 5A</option>
+                <option value="5B">Kelas 5B</option>
+                <option value="5C">Kelas 5C</option>
+                <option value="6A">Kelas 6A</option>
+                <option value="6B">Kelas 6B</option>
+            </select>
+            
+            <!-- FITUR BARU: NAMA MATA PELAJARAN -->
+            <label style="font-weight: 600; display:block; margin-bottom: 5px;">Mata Pelajaran:</label>
+            <input type="text" id="soal-mapel" class="form-control" placeholder="Contoh: Matematika, Bahasa Indonesia" required>
             
             <label style="font-weight: 600; display:block; margin-bottom: 5px;">Jenis Soal:</label>
             <select id="soal-jenis" class="form-control" onchange="toggleOpsiJawaban()" required>
@@ -404,8 +418,14 @@
                 };
             }
 
+            // Merekam data Kelas dan Mapel yang diinput oleh Guru
+            const kelas = document.getElementById('soal-kelas').value;
+            const mapel = document.getElementById('soal-mapel').value.trim();
+
             const payload = {
                 id: Date.now(),
+                kelas: kelas,
+                mapel: mapel,
                 jenis: jenis,
                 bobot: parseInt(document.getElementById('soal-bobot').value) || 10, 
                 gambar: document.getElementById('soal-gambar').value.trim(),
@@ -414,17 +434,26 @@
                 kunci: document.getElementById('soal-kunci').value.toUpperCase().trim()
             };
             
+            if(!mapel) return alert("Mata Pelajaran tidak boleh kosong!");
             if(!payload.soal) return alert("Soal tidak boleh kosong!");
             
             bankSoalLokal.push(payload);
             document.getElementById('modal-soal').style.display = 'none';
-            document.getElementById('list-soal').innerHTML = `Total ${bankSoalLokal.length} soal tersimpan di draft lokal.`;
             
-            // Bersihkan Form
-            document.getElementById('soal-gambar').value = ""; document.getElementById('soal-teks').value = "";
-            document.getElementById('soal-kunci').value = ""; document.getElementById('opsi-a').value = "";
-            document.getElementById('opsi-b').value = ""; document.getElementById('opsi-c').value = "";
-            document.getElementById('opsi-d').value = ""; document.getElementById('soal-bobot').value = "10";
+            // Memberikan informasi visual mengenai soal terakhir yang ditambahkan
+            document.getElementById('list-soal').innerHTML = `Total <strong>${bankSoalLokal.length}</strong> soal tersimpan di draft lokal.<br><br> <span style="font-size:13px;">(Data Terakhir: <em>${mapel} - Kelas ${kelas}</em>)</span>`;
+            
+            // Bersihkan Form agar siap untuk penambahan soal berikutnya
+            document.getElementById('soal-mapel').value = ""; // Mapel dikosongkan
+            document.getElementById('soal-kelas').value = "5A"; // Reset ke default
+            document.getElementById('soal-gambar').value = ""; 
+            document.getElementById('soal-teks').value = "";
+            document.getElementById('soal-kunci').value = ""; 
+            document.getElementById('opsi-a').value = "";
+            document.getElementById('opsi-b').value = ""; 
+            document.getElementById('opsi-c').value = "";
+            document.getElementById('opsi-d').value = ""; 
+            document.getElementById('soal-bobot').value = "10";
         }
 
         // ================= SISTEM UJIAN & SINKRONISASI GAS =================
@@ -459,7 +488,8 @@
             const soal = bankSoalLokal[index];
             const labelJenis = soal.jenis.replace(/_/g, ' ').toUpperCase();
             
-            document.getElementById('exam-progress').innerText = `Soal ${index + 1} dari ${bankSoalLokal.length}`;
+            // Menampilkan indikator Kelas dan Mapel di layar ujian Siswa (Opsional tapi informatif)
+            document.getElementById('exam-progress').innerText = `Soal ${index + 1} dari ${bankSoalLokal.length} | ${soal.mapel} - ${soal.kelas}`;
             document.getElementById('current-q-label').innerText = `Soal No. ${index + 1} - [${labelJenis}]`;
             document.getElementById('current-q-bobot').innerText = `Bobot: ${soal.bobot}`;
             
