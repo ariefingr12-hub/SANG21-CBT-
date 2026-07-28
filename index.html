@@ -209,26 +209,46 @@
 
         <section id="ujian" class="page-section">
             <h2>Ruang Ujian Siswa</h2>
+            
+            <!-- Form Input Token -->
             <div style="max-width: 400px; margin-top: 20px; background: white; padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
                 <div class="form-group">
                     <label style="font-weight: 600; display:block; margin-bottom: 8px;">Token Validasi:</label>
-                    <input type="text" id="exam-token" placeholder="Masukkan Token" class="form-control">
+                    <input type="text" id="exam-token" placeholder="Masukkan Token dari Guru" class="form-control">
                 </div>
-                <div class="form-group" style="margin-top: 15px;">
+                <button class="btn btn-primary" style="width: 100%; margin-top: 10px;" onclick="cekTokenUjian()">
+                    <i class="fas fa-search"></i> Cek Token Ujian
+                </button>
+            </div>
+
+            <!-- PANEL KONFIRMASI (Akan Muncul Setelah Token Dicek) -->
+            <div id="panel-konfirmasi" style="display: none; max-width: 400px; margin-top: 20px; background: #eef2ff; padding: 20px; border-radius: var(--radius-md); border: 2px dashed var(--primary-color);">
+                <h4 style="margin-top: 0; color: var(--primary-color); text-align: center;">Detail Ujian Ditemukan!</h4>
+                
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <p style="margin: 5px 0; font-size: 15px;"><strong>Mata Pelajaran :</strong> <span id="info-mapel" style="color: var(--danger-color); font-weight: bold;">-</span></p>
+                    <p style="margin: 5px 0; font-size: 15px;"><strong>Untuk Kelas :</strong> <span id="info-kelas" style="font-weight: bold;">-</span></p>
+                    <p style="margin: 5px 0; font-size: 15px;"><strong>Jumlah Soal :</strong> <span id="info-jumlah" style="font-weight: bold;">-</span> Soal</p>
+                </div>
+                
+                <div class="form-group">
                     <label style="font-weight: 600; display:block; margin-bottom: 8px;">Durasi Waktu (Menit):</label>
                     <input type="number" id="exam-duration" placeholder="Contoh: 90" class="form-control" value="60">
                 </div>
-                <button class="btn btn-primary" style="width: 100%; margin-top: 15px;" onclick="startExam()"><i class="fas fa-sign-in-alt"></i> Mulai Ujian</button>
+                
+                <button class="btn btn-success" style="width: 100%; margin-top: 10px;" onclick="startExam()">
+                    <i class="fas fa-play-circle"></i> Mulai Kerjakan Sekarang
+                </button>
             </div>
         </section>
     </div>
 
-    <!-- Modal Tambah Soal -->
+    <!-- Modal Tambah Soal (GURU) -->
     <div id="modal-soal" class="modal">
         <div class="modal-content">
             <h3 style="margin-top: 0;">Tambah Soal Baru</h3>
             
-            <!-- FITUR BARU: PILIH KELAS -->
+            <!-- FITUR: PILIH KELAS -->
             <label style="font-weight: 600; display:block; margin-bottom: 5px;">Kelas:</label>
             <select id="soal-kelas" class="form-control" required>
                 <option value="5A">Kelas 5A</option>
@@ -238,7 +258,7 @@
                 <option value="6B">Kelas 6B</option>
             </select>
             
-            <!-- FITUR BARU: NAMA MATA PELAJARAN -->
+            <!-- FITUR: NAMA MATA PELAJARAN -->
             <label style="font-weight: 600; display:block; margin-bottom: 5px;">Mata Pelajaran:</label>
             <input type="text" id="soal-mapel" class="form-control" placeholder="Contoh: Matematika, Bahasa Indonesia" required>
             
@@ -274,7 +294,7 @@
         </div>
     </div>
 
-    <!-- Antarmuka Ujian Berlangsung -->
+    <!-- Antarmuka Ujian Berlangsung (SISWA) -->
     <div id="exam-interface" class="exam-interface">
         <div class="exam-header">
             <div>
@@ -308,6 +328,7 @@
 
     <!-- SCRIPT JAVASCRIPT -->
     <script>
+        // GANTI URL DI BAWAH INI DENGAN URL DEPLOYMENT GAS MILIK ANDA
         const GAS_URL = "https://script.google.com/macros/s/AKfycbx7iK3clW-C9-PSuch67KDJgeMFHXK_dXoGobd3lDIaSyLEQTD0g1H_jLmEd6y3Ip7i/exec";
         
         let dataSiswaLokal = [];
@@ -418,7 +439,7 @@
                 };
             }
 
-            // Merekam data Kelas dan Mapel yang diinput oleh Guru
+            // Merekam data Kelas dan Mapel
             const kelas = document.getElementById('soal-kelas').value;
             const mapel = document.getElementById('soal-mapel').value.trim();
 
@@ -440,12 +461,11 @@
             bankSoalLokal.push(payload);
             document.getElementById('modal-soal').style.display = 'none';
             
-            // Memberikan informasi visual mengenai soal terakhir yang ditambahkan
+            // Info visual soal terakhir di Bank Soal
             document.getElementById('list-soal').innerHTML = `Total <strong>${bankSoalLokal.length}</strong> soal tersimpan di draft lokal.<br><br> <span style="font-size:13px;">(Data Terakhir: <em>${mapel} - Kelas ${kelas}</em>)</span>`;
             
-            // Bersihkan Form agar siap untuk penambahan soal berikutnya
-            document.getElementById('soal-mapel').value = ""; // Mapel dikosongkan
-            document.getElementById('soal-kelas').value = "5A"; // Reset ke default
+            // Bersihkan Form (Biarkan Kelas tetap seperti pilihan terakhir, reset mapel)
+            document.getElementById('soal-mapel').value = ""; 
             document.getElementById('soal-gambar').value = ""; 
             document.getElementById('soal-teks').value = "";
             document.getElementById('soal-kunci').value = ""; 
@@ -457,11 +477,26 @@
         }
 
         // ================= SISTEM UJIAN & SINKRONISASI GAS =================
-        function startExam() {
+        
+        // Mengecek token dan menampilkan info Mapel & Kelas
+        function cekTokenUjian() {
             const token = document.getElementById('exam-token').value;
             if(!token) return alert("Masukkan token ujian terlebih dahulu!");
-            if(bankSoalLokal.length === 0) return alert("Belum ada soal ujian! Guru harus membuat soal dulu.");
+            
+            if(bankSoalLokal.length === 0) return alert("Belum ada ujian yang aktif! Hubungi guru Anda.");
 
+            const infoMapel = bankSoalLokal[0].mapel || "Tidak Diketahui";
+            const infoKelas = bankSoalLokal[0].kelas || "Tidak Diketahui";
+            const jumlahSoal = bankSoalLokal.length;
+
+            document.getElementById('info-mapel').innerText = infoMapel.toUpperCase();
+            document.getElementById('info-kelas').innerText = infoKelas;
+            document.getElementById('info-jumlah').innerText = jumlahSoal;
+
+            document.getElementById('panel-konfirmasi').style.display = 'block';
+        }
+
+        function startExam() {
             isExamRunning = true;
             jawabanSiswa = {}; 
             indexSoalAktif = 0; 
@@ -488,7 +523,6 @@
             const soal = bankSoalLokal[index];
             const labelJenis = soal.jenis.replace(/_/g, ' ').toUpperCase();
             
-            // Menampilkan indikator Kelas dan Mapel di layar ujian Siswa (Opsional tapi informatif)
             document.getElementById('exam-progress').innerText = `Soal ${index + 1} dari ${bankSoalLokal.length} | ${soal.mapel} - ${soal.kelas}`;
             document.getElementById('current-q-label').innerText = `Soal No. ${index + 1} - [${labelJenis}]`;
             document.getElementById('current-q-bobot').innerText = `Bobot: ${soal.bobot}`;
@@ -503,7 +537,7 @@
             const jawabanTersimpan = jawabanSiswa[index] || ""; 
             
             if (soal.opsi) {
-                // Mode Pilihan Ganda
+                // Pilihan Ganda
                 htmlSoal += `<div style="margin-top: 20px; text-align: left;">`;
                 for (const [key, value] of Object.entries(soal.opsi)) {
                     if (value) {
@@ -518,7 +552,7 @@
                 htmlSoal += `</div>`;
                 areaTextarea.style.display = 'none';
             } else {
-                // Mode Isian / Essay
+                // Isian / Essay
                 areaTextarea.style.display = 'block';
                 const inputArea = document.getElementById('answer-input');
                 inputArea.value = jawabanTersimpan; 
@@ -589,17 +623,22 @@
             let nilaiAkhir = (totalSkorMaksimal > 0) ? (totalSkorDiperoleh / totalSkorMaksimal) * 100 : 0;
             nilaiAkhir = Math.round(nilaiAkhir * 100) / 100; 
 
-            // Kirim Nilai ke Google Apps Script (GAS)
             const btnSubmit = document.getElementById('btn-submit');
             if(btnSubmit) {
                 btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan Nilai...';
                 btnSubmit.disabled = true;
             }
 
+            // MENGIRIM KELAS DAN MAPEL KE DATABASE GAS
+            const mapelUjian = bankSoalLokal.length > 0 ? bankSoalLokal[0].mapel : "-";
+            const kelasUjian = bankSoalLokal.length > 0 ? bankSoalLokal[0].kelas : "-";
+
             const payloadData = {
                 action: "simpanNilai",
                 nis: sessionStorage.getItem('siswa_nis') || "-",
                 nama: sessionStorage.getItem('siswa_nama') || "Siswa Uji Coba",
+                kelas: kelasUjian,  
+                mapel: mapelUjian,  
                 nilai: nilaiAkhir,
                 jawaban: jawabanSiswa
             };
@@ -620,6 +659,7 @@
             }
             
             document.getElementById('exam-token').value = ""; 
+            document.getElementById('panel-konfirmasi').style.display = "none";
             document.getElementById('exam-interface').style.display = "none";
             logout();
         }
