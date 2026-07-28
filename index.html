@@ -333,7 +333,7 @@
         
         let dataSiswaLokal = [];
         let dataGuruLokal = [];
-        let bankSoalLokal = []; 
+        let bankSoalLokal = JSON.parse(localStorage.getItem('soal_cbt_sang21')) || [];
         let examInterval;
         let isExamRunning = false;
         let indexSoalAktif = 0;
@@ -458,7 +458,12 @@
             if(!mapel) return alert("Mata Pelajaran tidak boleh kosong!");
             if(!payload.soal) return alert("Soal tidak boleh kosong!");
             
-            bankSoalLokal.push(payload);
+           bankSoalLokal.push(payload);
+            
+            // FITUR BARU: Simpan permanen ke memori browser
+            localStorage.setItem('soal_cbt_sang21', JSON.stringify(bankSoalLokal));
+            
+            document.getElementById('modal-soal').style.display = 'none';
             document.getElementById('modal-soal').style.display = 'none';
             
             // Info visual soal terakhir di Bank Soal
