@@ -3,49 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SANG21 CBT - SD</title>
+    <title>SANG21 CBT - SDN 21 Sanggalea</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #4f46e5; --primary-hover: #4338ca;
             --danger-color: #ef4444; --danger-hover: #dc2626;
-            --success-color: #10b981; --success-hover: #059669;
+            --success-color: #10b981; --warning-color: #f59e0b;
             --bg-color: #f8fafc; --card-bg: #ffffff;
             --text-color: #1e293b; --text-muted: #64748b;
-            --border-color: #e2e8f0; --sidebar-bg: #0f172a; --sidebar-hover: #1e293b;
-            --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --border-color: #e2e8f0; --sidebar-bg: #0f172a;
             --radius-md: 8px; --radius-lg: 16px;
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
         }
         body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-color); color: var(--text-color); display: flex; height: 100vh; overflow: hidden; }
         .form-control { width: 100%; padding: 12px 15px; margin-bottom: 15px; border: 1.5px solid var(--border-color); border-radius: var(--radius-md); box-sizing: border-box; background-color: #fcfcfc; }
-        .btn { padding: 12px 20px; border: none; border-radius: var(--radius-md); cursor: pointer; font-weight: 600; color: white; display: inline-flex; align-items: center; gap: 8px; }
-        .btn-primary { background: var(--primary-color); } .btn-danger { background: var(--danger-color); } .btn-success { background: var(--success-color); }
+        .btn { padding: 10px 18px; border: none; border-radius: var(--radius-md); cursor: pointer; font-weight: 600; color: white; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; }
+        .btn-primary { background: var(--primary-color); } .btn-danger { background: var(--danger-color); } .btn-success { background: var(--success-color); } .btn-warning { background: var(--warning-color); }
         .sidebar { width: 260px; background: var(--sidebar-bg); color: white; display: flex; flex-direction: column; padding: 25px 0; z-index: 10; }
-        .sidebar h3 { text-align: center; font-weight: 800; color: #f8fafc; }
         .nav-links { list-style: none; padding: 0; margin: 0; }
         .nav-links li a { display: block; padding: 15px 25px; color: #cbd5e1; text-decoration: none; }
-        .main-content { flex: 1; padding: 30px; overflow-y: auto; }
-        .page-section { display: none; background: var(--card-bg); padding: 30px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); }
+        .nav-links li a:hover { background: #1e293b; color: white; }
+        .main-content { flex: 1; padding: 30px; overflow-y: auto; padding-bottom: 80px; }
+        .page-section { display: none; background: var(--card-bg); padding: 30px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--border-color); }
         .active-section { display: block; }
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); align-items: center; justify-content: center; z-index: 1000; }
-        .modal-content { background: var(--card-bg); padding: 30px; border-radius: var(--radius-lg); width: 90%; max-width: 550px; max-height: 90vh; overflow-y: auto; }
+        .modal-content { background: var(--card-bg); padding: 30px; border-radius: var(--radius-lg); width: 90%; max-width: 600px; max-height: 85vh; overflow-y: auto; }
         .exam-interface { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2000; padding: 30px; overflow-y: auto; }
-        .exam-header { display: flex; justify-content: space-between; align-items: center; background: var(--card-bg); padding: 15px 25px; border-radius: var(--radius-lg); margin-bottom: 30px; }
-        #timer { font-size: 28px; font-weight: 800; color: var(--danger-color); }
-        .footer-sekolah { position: fixed; bottom: 0; width: 100%; background-color: var(--card-bg); text-align: center; padding: 15px 0; font-size: 13px; z-index: 999999; }
-        .main-content, .exam-interface { padding-bottom: 80px !important; }
-        .nav-buttons { display: flex; justify-content: space-between; margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 20px;}
+        .exam-header { display: flex; justify-content: space-between; align-items: center; background: var(--card-bg); padding: 15px 25px; border-radius: var(--radius-lg); margin-bottom: 25px; box-shadow: var(--shadow-md); }
+        #timer { font-size: 26px; font-weight: 800; color: var(--danger-color); }
+        .footer-sekolah { position: fixed; bottom: 0; width: 100%; background-color: var(--card-bg); text-align: center; padding: 12px 0; font-size: 13px; z-index: 999; border-top: 1px solid var(--border-color); }
+        .soal-card { border: 1px solid var(--border-color); padding: 20px; border-radius: var(--radius-md); margin-bottom: 15px; background: #fff; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; color: white; }
+        .badge-pg { background: #3b82f6; } .badge-essay { background: #8b5cf6; } .badge-num { background: #10b981; } .badge-lit { background: #f59e0b; }
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 20px; }
+        .logo-img { width: 80px; height: 80px; object-fit: contain; margin-bottom: 15px; border-radius: 8px; }
+        .sidebar-logo { width: 60px; height: 60px; object-fit: contain; margin-bottom: 10px; border-radius: 8px; }
     </style>
 </head>
 <body>
 
-    <!-- LAYAR LOGIN -->
+    <!-- SCREEN LOGIN -->
     <div id="login-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 99999; display: flex; align-items: center; justify-content: center;">
-        <div style="background: var(--card-bg); padding: 40px; border-radius: 16px; width: 90%; max-width: 400px; box-shadow: var(--shadow-lg);">
+        <div style="background: var(--card-bg); padding: 40px; border-radius: 16px; width: 90%; max-width: 400px; box-shadow: var(--shadow-md);">
             <div style="text-align: center; margin-bottom: 25px;">
-                <h2 style="color: var(--primary-color);">SANG21 CBT</h2>
+                <!-- LOGO DI HALAMAN LOGIN -->
+                <img src="Logo.jpg" alt="Logo SANG21" class="logo-img" onerror="this.style.display='none'">
+                <h2 style="color: var(--primary-color); margin:0;">SANG21 CBT</h2>
+                <small style="color: var(--text-muted);">SDN 21 Sanggalea</small>
             </div>
             <select id="login-role" class="form-control" onchange="toggleLoginType()">
                 <option value="siswa">Siswa (Gunakan NIS)</option>
@@ -56,93 +61,143 @@
         </div>
     </div>
 
-    <!-- SIDEBAR -->
+    <!-- SIDEBAR NAVIGATION -->
     <nav class="sidebar" id="sidebar" style="display: none;">
-        <h3>SANG21</h3>
+        <div style="text-align: center; margin-bottom: 30px;">
+            <!-- LOGO DI SIDEBAR -->
+            <img src="Logo.jpg" alt="Logo" class="sidebar-logo" onerror="this.style.display='none'">
+            <h3 style="color: #f8fafc; margin: 0;">SANG21 CBT</h3>
+        </div>
         <ul class="nav-links">
-            <li id="menu-dashboard"><a href="#" onclick="navigate('dashboard')">Dashboard</a></li>
-            <li id="menu-bank-soal"><a href="#" onclick="navigate('bank-soal')">Bank Soal</a></li>
-            <li id="menu-ujian"><a href="#" onclick="navigate('ujian')">Ruang Ujian</a></li>
-            <li><a href="#" onclick="logout()">Keluar</a></li>
+            <li id="menu-dashboard"><a href="#" onclick="navigate('dashboard')"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li id="menu-bank-soal"><a href="#" onclick="navigate('bank-soal')"><i class="fa fa-book"></i> Bank Soal</a></li>
+            <li id="menu-ujian"><a href="#" onclick="navigate('ujian')"><i class="fa fa-pen"></i> Ruang Ujian</a></li>
+            <li><a href="#" onclick="logout()"><i class="fa fa-sign-out-alt"></i> Keluar</a></li>
         </ul>
     </nav>
 
-    <!-- KONTEN -->
+    <!-- KONTEN UTAMA -->
     <div class="main-content">
-        <section id="dashboard" class="page-section"><h2>Dashboard Guru</h2></section>
+        <!-- DASHBOARD GURU -->
+        <section id="dashboard" class="page-section">
+            <h2>Dashboard Guru</h2>
+            <p>Selamat datang di sistem manajemen Ujian SANG21 CBT.</p>
+        </section>
         
+        <!-- BANK SOAL -->
         <section id="bank-soal" class="page-section">
-            <h2>Bank Soal</h2>
-            <button class="btn btn-primary" onclick="document.getElementById('modal-soal').style.display='flex'">+ Tambah Soal</button>
-            <div id="list-soal" style="margin-top: 20px;">Data soal akan masuk ke Spreadsheet.</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Bank Soal</h2>
+                <div>
+                    <button class="btn btn-primary" onclick="bukaModalTambah()"><i class="fa fa-plus"></i> Tambah Soal Baru</button>
+                    <button class="btn btn-success" onclick="loadBankSoal()"><i class="fa fa-sync"></i> Refresh Data</button>
+                </div>
+            </div>
+            <div id="list-soal">Memuat daftar soal...</div>
         </section>
 
+        <!-- RUANG UJIAN -->
         <section id="ujian" class="page-section">
             <h2>Ruang Ujian Siswa</h2>
-            <input type="text" id="exam-token" placeholder="Masukkan Token" class="form-control" style="max-width: 400px;">
-            <button class="btn btn-primary" onclick="cekTokenUjian()">Cek Token Ujian</button>
+            <p>Masukkan Token Ujian untuk memulai mengerjakan soal.</p>
+            <input type="text" id="exam-token" placeholder="Ketik Token Ujian..." class="form-control" style="max-width: 400px;">
+            <button class="btn btn-primary" onclick="cekTokenUjian()">Cek Token & Muat Soal</button>
 
-            <div id="panel-konfirmasi" style="display: none; max-width: 400px; margin-top: 20px; background: #eef2ff; padding: 20px; border-radius: var(--radius-md);">
-                <h4>Detail Ujian Ditemukan!</h4>
-                <p>Mata Pelajaran: <span id="info-mapel">-</span></p>
-                <p>Kelas: <span id="info-kelas">-</span></p>
-                <p>Jumlah Soal: <span id="info-jumlah">-</span></p>
-                <input type="number" id="exam-duration" placeholder="Durasi (Menit)" class="form-control" value="60">
-                <button class="btn btn-success" style="width: 100%;" onclick="startExam()">Mulai Kerjakan</button>
+            <div id="panel-konfirmasi" style="display: none; max-width: 450px; margin-top: 20px; background: #eef2ff; padding: 20px; border-radius: var(--radius-md); border: 1px solid #c7d2fe;">
+                <h4 style="margin-top:0;">Detail Ujian Siap</h4>
+                <p>Mata Pelajaran: <strong id="info-mapel">-</strong></p>
+                <p>Kelas: <strong id="info-kelas">-</strong></p>
+                <p>Jumlah Soal: <strong id="info-jumlah">-</strong></p>
+                <label>Durasi Ujian (Menit):</label>
+                <input type="number" id="exam-duration" class="form-control" value="60" style="margin-top:5px;">
+                <button class="btn btn-success" style="width: 100%;" onclick="startExam()">Mulai Kerjakan Sekarang</button>
             </div>
         </section>
     </div>
 
-    <!-- MODAL SOAL -->
+    <!-- MODAL TAMBAH / EDIT SOAL -->
     <div id="modal-soal" class="modal">
         <div class="modal-content">
-            <h3>Tambah Soal Baru</h3>
-            <select id="soal-kelas" class="form-control">
-                <option value="5A">Kelas 5A</option><option value="5B">Kelas 5B</option><option value="6A">Kelas 6A</option>
-            </select>
-            <input type="text" id="soal-mapel" class="form-control" placeholder="Mata Pelajaran">
-            <select id="soal-jenis" class="form-control" onchange="toggleOpsiJawaban()">
-                <option value="pilihan_ganda">Pilihan Ganda</option><option value="essay">Essay</option>
-            </select>
-            <input type="number" id="soal-bobot" class="form-control" placeholder="Bobot" value="10">
-            <input type="url" id="soal-gambar" class="form-control" placeholder="URL Gambar">
-            <textarea id="soal-teks" class="form-control" placeholder="Teks soal..."></textarea>
+            <h3 id="modal-soal-title" style="margin-top:0;">Tambah Soal Baru</h3>
+            <input type="hidden" id="soal-id" value="">
             
+            <label>Kelas:</label>
+            <select id="soal-kelas" class="form-control">
+                <option value="5A">Kelas 5A</option>
+                <option value="5B">Kelas 5B</option>
+                <option value="6A">Kelas 6A</option>
+                <option value="6B">Kelas 6B</option>
+            </select>
+            
+            <label>Mata Pelajaran:</label>
+            <input type="text" id="soal-mapel" class="form-control" placeholder="Contoh: MATEMATIKA, IPA">
+            
+            <label>Jenis Soal:</label>
+            <select id="soal-jenis" class="form-control" onchange="toggleOpsiJawaban()">
+                <option value="pilihan_ganda">Pilihan Ganda</option>
+                <option value="essay">Essay</option>
+                <option value="hots_numerasi">HOTS - Numerasi</option>
+                <option value="hots_literasi">HOTS - Literasi</option>
+            </select>
+            
+            <label>Bobot Nilai:</label>
+            <input type="number" id="soal-bobot" class="form-control" value="10">
+            
+            <label>URL Gambar (Opsional):</label>
+            <input type="url" id="soal-gambar" class="form-control" placeholder="https://...">
+            
+            <label>Teks Pertanyaan / Soal:</label>
+            <textarea id="soal-teks" class="form-control" rows="4" placeholder="Tuliskan pertanyaan di sini..."></textarea>
+            
+            <!-- AREA PILIHAN GANDA -->
             <div id="area-opsi-pg">
-                <input type="text" id="opsi-a" class="form-control" placeholder="Pilihan A">
-                <input type="text" id="opsi-b" class="form-control" placeholder="Pilihan B">
-                <input type="text" id="opsi-c" class="form-control" placeholder="Pilihan C">
-                <input type="text" id="opsi-d" class="form-control" placeholder="Pilihan D">
+                <label>Pilihan Jawaban:</label>
+                <input type="text" id="opsi-a" class="form-control" placeholder="Opsi A">
+                <input type="text" id="opsi-b" class="form-control" placeholder="Opsi B">
+                <input type="text" id="opsi-c" class="form-control" placeholder="Opsi C">
+                <input type="text" id="opsi-d" class="form-control" placeholder="Opsi D">
             </div>
-            <input type="text" id="soal-kunci" class="form-control" placeholder="Kunci Jawaban">
-            <button class="btn btn-primary" onclick="saveSoal()">Simpan ke Database</button>
-            <button class="btn btn-danger" onclick="document.getElementById('modal-soal').style.display='none'">Tutup</button>
+            
+            <label>Kunci Jawaban:</label>
+            <input type="text" id="soal-kunci" class="form-control" placeholder="Untuk PG ketik hurufnya saja (A/B/C/D). Untuk Essay/HOTS isi kata kunci jawaban.">
+            
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 15px;">
+                <button class="btn btn-danger" onclick="tutupModalSoal()">Batal</button>
+                <button class="btn btn-primary" onclick="saveSoal()">Simpan ke Database</button>
+            </div>
         </div>
     </div>
 
-    <!-- ANTARMUKA UJIAN -->
+    <!-- INTERFACE LEMBAR UJIAN SISWA -->
     <div id="exam-interface" class="exam-interface">
         <div class="exam-header">
             <div>
-                <h3 id="exam-student-name">Nama Siswa</h3>
-                <span id="exam-progress">Soal 1</span>
+                <h3 id="exam-student-name" style="margin:0;">Nama Siswa</h3>
+                <span id="exam-progress" style="color: var(--text-muted); font-size: 14px;">Soal 1</span>
             </div>
             <div id="timer">00:00:00</div>
         </div>
-        <div style="max-width: 800px; margin: 0 auto; background: var(--card-bg); padding: 30px; border-radius: var(--radius-lg);">
-            <div id="current-q-text"></div>
-            <div id="container-answer-input"><textarea id="answer-input" class="form-control"></textarea></div>
+        <div style="max-width: 800px; margin: 0 auto; background: var(--card-bg); padding: 30px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md);">
+            <div id="current-q-type" style="margin-bottom: 10px;"></div>
+            <div id="current-q-text" style="font-size: 16px; line-height: 1.6; margin-bottom: 20px;"></div>
+            
+            <!-- AREA JAWABAN ESSAY / HOTS -->
+            <div id="container-answer-input" style="display: none;">
+                <label>Jawaban Anda:</label>
+                <textarea id="answer-input" class="form-control" rows="5" placeholder="Ketikkan jawaban lengkap Anda di sini..."></textarea>
+            </div>
+            
             <div class="nav-buttons">
-                <button class="btn" id="btn-prev" onclick="navigasiSoal(-1)">Sebelumnya</button>
-                <button class="btn btn-primary" id="btn-next" onclick="navigasiSoal(1)">Selanjutnya</button>
-                <button class="btn btn-success" id="btn-submit" onclick="submitExam(false)" style="display:none;">Selesai</button>
+                <button class="btn btn-warning" id="btn-prev" onclick="navigasiSoal(-1)"><i class="fa fa-arrow-left"></i> Sebelumnya</button>
+                <button class="btn btn-primary" id="btn-next" onclick="navigasiSoal(1)">Selanjutnya <i class="fa fa-arrow-right"></i></button>
+                <button class="btn btn-success" id="btn-submit" onclick="submitExam(false)" style="display:none;"><i class="fa fa-check"></i> Selesai Ujian</button>
             </div>
         </div>
     </div>
 
     <script>
-        // MASUKKAN URL GAS MILIK ANDA DI SINI
-        const GAS_URL = "https://script.google.com/macros/s/AKfycbzkesAgOJRGSdB62CsZncnclEy4bADhVYsd6nlDMFMQNlTMWzFrCVrdKzyBSbUCtYJM/exec";
+        // MASUKKAN URL GOOGLE APPS SCRIPT ANDA DI SINI YAA BRO
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbx7iK3clW-C9-PSuch67KDJgeMFHXK_dXoGobd3lDIaSyLEQTD0g1H_jLmEd6y3Ip7i/exec";
         
         let dataSiswaLokal = [], dataGuruLokal = [], bankSoalLokal = [];
         let examInterval, indexSoalAktif = 0, jawabanSiswa = {};
@@ -154,24 +209,24 @@
         async function prosesLogin(e) {
             const role = document.getElementById('login-role').value;
             const idInput = document.getElementById('login-id').value.trim();
-            if(!idInput) return alert("Isi ID dulu!");
+            if(!idInput) return alert("Silakan isi ID login terlebih dahulu!");
             
-            e.target.innerHTML = 'Memeriksa...'; e.target.disabled = true;
+            const btn = e.target; btn.innerHTML = 'Memeriksa...'; btn.disabled = true;
             try {
                 if(role === 'guru') {
                     if(idInput === "admin") { masukSebagaiGuru("Admin"); return; }
                     const res = await fetch(GAS_URL + "?action=getGuru");
                     dataGuruLokal = await res.json();
                     const cekGuru = dataGuruLokal.find(g => String(g.nip) === idInput);
-                    if(cekGuru) masukSebagaiGuru(cekGuru.nama); else alert("NIP tidak terdaftar.");
+                    if(cekGuru) masukSebagaiGuru(cekGuru.nama); else alert("NIP tidak terdaftar di sistem.");
                 } else {
                     const res = await fetch(GAS_URL + "?action=getSiswa");
                     dataSiswaLokal = await res.json();
                     const cekSiswa = dataSiswaLokal.find(s => String(s.nis) === idInput);
-                    if(cekSiswa) masukSebagaiSiswa(cekSiswa.nama, cekSiswa.nis); else alert("NIS tidak ditemukan.");
+                    if(cekSiswa) masukSebagaiSiswa(cekSiswa.nama, cekSiswa.nis); else alert("NIS tidak terdaftar.");
                 }
-            } catch(err) { alert("Gagal konek server."); }
-            e.target.innerHTML = 'Masuk Sistem'; e.target.disabled = false;
+            } catch(err) { alert("Gagal terhubung ke database. Periksa koneksi/URL GAS."); }
+            btn.innerHTML = 'Masuk Sistem'; btn.disabled = false;
         }
 
         function masukSebagaiGuru(nama) {
@@ -179,10 +234,12 @@
             document.getElementById('sidebar').style.display = 'flex';
             document.querySelectorAll('.nav-links li').forEach(el => el.style.display = 'block');
             navigate('dashboard');
+            loadBankSoal();
         }
 
         function masukSebagaiSiswa(nama, nis) {
-            sessionStorage.setItem('siswa_nama', nama); sessionStorage.setItem('siswa_nis', nis);
+            sessionStorage.setItem('siswa_nama', nama); 
+            sessionStorage.setItem('siswa_nis', nis);
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('sidebar').style.display = 'flex';
             document.getElementById('menu-dashboard').style.display = 'none';
@@ -191,73 +248,213 @@
         }
 
         function logout() { sessionStorage.clear(); location.reload(); }
-        function navigate(pageId) { document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active-section')); document.getElementById(pageId).classList.add('active-section'); }
-        function toggleOpsiJawaban() { document.getElementById('area-opsi-pg').style.display = document.getElementById('soal-jenis').value === 'pilihan_ganda' ? 'block' : 'none'; }
+        
+        function navigate(pageId) { 
+            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active-section')); 
+            document.getElementById(pageId).classList.add('active-section'); 
+        }
+
+        function toggleOpsiJawaban() { 
+            const jenis = document.getElementById('soal-jenis').value;
+            document.getElementById('area-opsi-pg').style.display = (jenis === 'pilihan_ganda') ? 'block' : 'none'; 
+        }
+
+        // --- MANAJEMEN BANK SOAL ---
+        async function loadBankSoal() {
+            const container = document.getElementById('list-soal');
+            container.innerHTML = "Memuat data dari database...";
+            try {
+                const res = await fetch(GAS_URL + "?action=getSoal");
+                bankSoalLokal = await res.json();
+                
+                if(!bankSoalLokal || bankSoalLokal.length === 0) {
+                    container.innerHTML = "<p>Belum ada soal di database.</p>";
+                    return;
+                }
+
+                let html = "";
+                bankSoalLokal.forEach((soal, idx) => {
+                    let badgeClass = "badge-pg";
+                    let jenisText = "Pilihan Ganda";
+                    if(soal.jenis === "essay") { badgeClass = "badge-essay"; jenisText = "Essay"; }
+                    else if(soal.jenis === "hots_numerasi") { badgeClass = "badge-num"; jenisText = "HOTS - Numerasi"; }
+                    else if(soal.jenis === "hots_literasi") { badgeClass = "badge-lit"; jenisText = "HOTS - Literasi"; }
+
+                    html += `
+                        <div class="soal-card">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                                <div>
+                                    <span class="badge ${badgeClass}">${jenisText}</span>
+                                    <strong>${soal.mapel} (Kelas ${soal.kelas})</strong>
+                                </div>
+                                <div>
+                                    <button class="btn btn-warning" onclick="bukaModalEdit('${soal.id}')"><i class="fa fa-edit"></i> Edit</button>
+                                    <button class="btn btn-danger" onclick="hapusSoal('${soal.id}')"><i class="fa fa-trash"></i> Hapus</button>
+                                </div>
+                            </div>
+                            <p>${soal.soal}</p>
+                            ${soal.gambar ? `<img src="${soal.gambar}" style="max-width:200px; display:block; margin-bottom:10px;">` : ''}
+                            <small style="color:var(--text-muted);">Kunci Jawaban: <strong>${soal.kunci}</strong> | Bobot: ${soal.bobot}</small>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            } catch(e) {
+                container.innerHTML = "<p style='color:red;'>Gagal memuat bank soal.</p>";
+            }
+        }
+
+        function bukaModalTambah() {
+            document.getElementById('modal-soal-title').innerText = "Tambah Soal Baru";
+            document.getElementById('soal-id').value = "";
+            document.getElementById('soal-teks').value = "";
+            document.getElementById('soal-gambar').value = "";
+            document.getElementById('opsi-a').value = "";
+            document.getElementById('opsi-b').value = "";
+            document.getElementById('opsi-c').value = "";
+            document.getElementById('opsi-d').value = "";
+            document.getElementById('soal-kunci').value = "";
+            document.getElementById('soal-jenis').value = "pilihan_ganda";
+            toggleOpsiJawaban();
+            document.getElementById('modal-soal').style.display = 'flex';
+        }
+
+        function bukaModalEdit(id) {
+            const s = bankSoalLokal.find(item => String(item.id) === String(id));
+            if(!s) return alert("Data soal tidak ditemukan!");
+
+            document.getElementById('modal-soal-title').innerText = "Edit Soal";
+            document.getElementById('soal-id').value = s.id;
+            document.getElementById('soal-kelas').value = s.kelas;
+            document.getElementById('soal-mapel').value = s.mapel;
+            document.getElementById('soal-jenis').value = s.jenis;
+            document.getElementById('soal-bobot').value = s.bobot;
+            document.getElementById('soal-gambar').value = s.gambar || "";
+            document.getElementById('soal-teks').value = s.soal;
+            
+            if(s.opsi) {
+                document.getElementById('opsi-a').value = s.opsi.A || "";
+                document.getElementById('opsi-b').value = s.opsi.B || "";
+                document.getElementById('opsi-c').value = s.opsi.C || "";
+                document.getElementById('opsi-d').value = s.opsi.D || "";
+            }
+            document.getElementById('soal-kunci').value = s.kunci || "";
+            
+            toggleOpsiJawaban();
+            document.getElementById('modal-soal').style.display = 'flex';
+        }
+
+        function tutupModalSoal() {
+            document.getElementById('modal-soal').style.display = 'none';
+        }
 
         async function saveSoal() {
             const btn = event.target;
             btn.innerHTML = 'Menyimpan...'; btn.disabled = true;
             
+            const existingId = document.getElementById('soal-id').value;
+            const actionType = existingId ? "editSoal" : "simpanSoal";
+            const idSoal = existingId ? existingId : String(Date.now());
+
+            const jenis = document.getElementById('soal-jenis').value;
+
             const payload = {
-                action: "simpanSoal", id: Date.now(),
+                action: actionType, 
+                id: idSoal,
                 kelas: document.getElementById('soal-kelas').value,
-                mapel: document.getElementById('soal-mapel').value,
-                jenis: document.getElementById('soal-jenis').value,
+                mapel: document.getElementById('soal-mapel').value.toUpperCase(),
+                jenis: jenis,
                 bobot: parseInt(document.getElementById('soal-bobot').value) || 10,
                 gambar: document.getElementById('soal-gambar').value,
                 soal: document.getElementById('soal-teks').value,
-                opsi: document.getElementById('soal-jenis').value === 'pilihan_ganda' ? { A: document.getElementById('opsi-a').value, B: document.getElementById('opsi-b').value, C: document.getElementById('opsi-c').value, D: document.getElementById('opsi-d').value } : null,
-                kunci: document.getElementById('soal-kunci').value
+                opsi: jenis === 'pilihan_ganda' ? { 
+                    A: document.getElementById('opsi-a').value, 
+                    B: document.getElementById('opsi-b').value, 
+                    C: document.getElementById('opsi-c').value, 
+                    D: document.getElementById('opsi-d').value 
+                } : null,
+                kunci: document.getElementById('soal-kunci').value.trim()
             };
 
             try {
                 const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
                 if(res.ok) {
-                    alert("Soal berhasil disimpan ke Database!");
-                    document.getElementById('modal-soal').style.display = 'none';
-                }
-            } catch(e) { alert("Gagal simpan soal."); }
+                    alert("Soal berhasil disimpan!");
+                    tutupModalSoal();
+                    loadBankSoal();
+                } else { alert("Gagal menyimpan soal."); }
+            } catch(e) { alert("Kesalahan koneksi ke server."); }
             btn.innerHTML = 'Simpan ke Database'; btn.disabled = false;
         }
 
+        async function hapusSoal(id) {
+            if(!confirm("Yakin ingin menghapus soal ini?")) return;
+            try {
+                const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: "hapusSoal", id: id }) });
+                if(res.ok) {
+                    alert("Soal berhasil dihapus!");
+                    loadBankSoal();
+                }
+            } catch(e) { alert("Gagal menghapus soal."); }
+        }
+
+        // --- MANAJEMEN UJIAN SISWA ---
         async function cekTokenUjian() {
             const btn = event.target;
-            btn.innerHTML = 'Loading...'; btn.disabled = true;
+            btn.innerHTML = 'Memeriksa...'; btn.disabled = true;
             try {
                 const res = await fetch(GAS_URL + "?action=getSoal");
                 bankSoalLokal = await res.json();
                 
-                if(bankSoalLokal.length === 0) { alert("Belum ada soal."); btn.innerHTML = 'Cek Token Ujian'; btn.disabled = false; return; }
+                if(!bankSoalLokal || bankSoalLokal.length === 0) { 
+                    alert("Belum ada soal tersedia di database."); 
+                    btn.innerHTML = 'Cek Token & Muat Soal'; btn.disabled = false; 
+                    return; 
+                }
                 
                 document.getElementById('info-mapel').innerText = bankSoalLokal[0].mapel;
                 document.getElementById('info-kelas').innerText = bankSoalLokal[0].kelas;
-                document.getElementById('info-jumlah').innerText = bankSoalLokal.length;
+                document.getElementById('info-jumlah').innerText = bankSoalLokal.length + " Soal";
                 document.getElementById('panel-konfirmasi').style.display = 'block';
-            } catch(e) { alert("Gagal tarik soal dari server."); }
-            btn.innerHTML = 'Cek Token Ujian'; btn.disabled = false;
+            } catch(e) { alert("Gagal mengambil data dari server."); }
+            btn.innerHTML = 'Cek Token & Muat Soal'; btn.disabled = false;
         }
 
         function startExam() {
             jawabanSiswa = {}; indexSoalAktif = 0;
             document.getElementById('exam-interface').style.display = 'block';
             document.getElementById('exam-student-name').innerText = sessionStorage.getItem('siswa_nama');
+            
             let sisaWaktu = (parseInt(document.getElementById('exam-duration').value) || 60) * 60;
             examInterval = setInterval(() => {
                 if(sisaWaktu <= 0) { submitExam(true); return; }
                 sisaWaktu--;
-                document.getElementById('timer').innerText = `${Math.floor(sisaWaktu / 3600).toString().padStart(2,'0')}:${Math.floor((sisaWaktu % 3600) / 60).toString().padStart(2,'0')}:${Math.floor(sisaWaktu % 60).toString().padStart(2,'0')}`;
+                let h = Math.floor(sisaWaktu / 3600).toString().padStart(2,'0');
+                let m = Math.floor((sisaWaktu % 3600) / 60).toString().padStart(2,'0');
+                let s = Math.floor(sisaWaktu % 60).toString().padStart(2,'0');
+                document.getElementById('timer').innerText = `${h}:${m}:${s}`;
             }, 1000);
             tampilkanSoal(0);
         }
 
         function tampilkanSoal(index) {
             const soal = bankSoalLokal[index];
-            document.getElementById('exam-progress').innerText = `Soal ${index + 1} / ${bankSoalLokal.length}`;
-            let html = (soal.gambar ? `<img src="${soal.gambar}" style="max-width:100%;"><br>` : "") + soal.soal;
+            document.getElementById('exam-progress').innerText = `Soal ${index + 1} dari ${bankSoalLokal.length}`;
             
-            if(soal.opsi) {
+            let badgeClass = "badge-pg"; let jenisText = "Pilihan Ganda";
+            if(soal.jenis === "essay") { badgeClass = "badge-essay"; jenisText = "Essay"; }
+            else if(soal.jenis === "hots_numerasi") { badgeClass = "badge-num"; jenisText = "HOTS - Numerasi"; }
+            else if(soal.jenis === "hots_literasi") { badgeClass = "badge-lit"; jenisText = "HOTS - Literasi"; }
+
+            document.getElementById('current-q-type').innerHTML = `<span class="badge ${badgeClass}">${jenisText}</span>`;
+
+            let html = (soal.gambar ? `<img src="${soal.gambar}" style="max-width:100%; border-radius:8px; margin-bottom:15px;"><br>` : "") + soal.soal;
+            
+            if(soal.jenis === 'pilihan_ganda' && soal.opsi) {
                 html += `<div style="margin-top:20px;">`;
-                for(const [k,v] of Object.entries(soal.opsi)) if(v) html += `<label style="display:block;margin-bottom:10px;"><input type="radio" name="jwb" value="${k}" ${jawabanSiswa[index]===k?'checked':''}> ${k}. ${v}</label>`;
+                for(const [k,v] of Object.entries(soal.opsi)) {
+                    if(v) html += `<label style="display:block; margin-bottom:12px; padding:10px; border:1px solid var(--border-color); border-radius:6px; cursor:pointer;"><input type="radio" name="jwb" value="${k}" ${jawabanSiswa[index]===k?'checked':''}> <strong>${k}.</strong> ${v}</label>`;
+                }
                 html += `</div>`;
                 document.getElementById('container-answer-input').style.display = 'none';
             } else {
@@ -272,7 +469,8 @@
         }
 
         function simpanJawabanSementara() {
-            if(bankSoalLokal[indexSoalAktif].opsi) {
+            const soal = bankSoalLokal[indexSoalAktif];
+            if(soal.jenis === 'pilihan_ganda') {
                 const checked = document.querySelector('input[name="jwb"]:checked');
                 if(checked) jawabanSiswa[indexSoalAktif] = checked.value;
             } else {
@@ -280,30 +478,44 @@
             }
         }
 
-        function navigasiSoal(arah) { simpanJawabanSementara(); indexSoalAktif += arah; tampilkanSoal(indexSoalAktif); }
+        function navigasiSoal(arah) { 
+            simpanJawabanSementara(); 
+            indexSoalAktif += arah; 
+            tampilkanSoal(indexSoalAktif); 
+        }
 
         async function submitExam(force = false) {
-            if(!force && !confirm("Selesai ujian?")) return;
-            clearInterval(examInterval); simpanJawabanSementara();
+            if(!force && !confirm("Apakah Anda yakin ingin menyelesaikan ujian ini?")) return;
+            clearInterval(examInterval); 
+            simpanJawabanSementara();
             
             let totalSkor = 0, totalMax = 0;
             bankSoalLokal.forEach((s, i) => {
                 totalMax += s.bobot;
-                if(s.opsi && jawabanSiswa[i] === s.kunci) totalSkor += s.bobot;
-                else if(!s.opsi && s.jenis === 'isian' && (jawabanSiswa[i]||'').toLowerCase() === s.kunci.toLowerCase()) totalSkor += s.bobot;
+                if(s.jenis === 'pilihan_ganda' && jawabanSiswa[i] === s.kunci) {
+                    totalSkor += s.bobot;
+                } else if(s.jenis !== 'pilihan_ganda' && (jawabanSiswa[i]||'').toLowerCase().trim() === s.kunci.toLowerCase().trim()) {
+                    totalSkor += s.bobot;
+                }
             });
 
-            document.getElementById('btn-submit').innerHTML = 'Menyimpan...';
+            let nilaiAkhir = Math.round((totalSkor / totalMax) * 100);
             
             const payload = {
-                action: "simpanNilai", nis: sessionStorage.getItem('siswa_nis'), nama: sessionStorage.getItem('siswa_nama'),
-                kelas: bankSoalLokal[0].kelas, mapel: bankSoalLokal[0].mapel, nilai: (totalSkor/totalMax)*100, jawaban: jawabanSiswa
+                action: "simpanNilai", 
+                nis: sessionStorage.getItem('siswa_nis'), 
+                nama: sessionStorage.getItem('siswa_nama'),
+                mapel: bankSoalLokal[0].mapel, 
+                nilai: nilaiAkhir, 
+                jawaban: jawabanSiswa
             };
 
             try {
                 await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
-                alert(`Ujian Selesai! Nilai Anda: ${(totalSkor/totalMax)*100}`);
-            } catch(e) { alert("Nilai dihitung, tapi periksa koneksi internet."); }
+                alert(`Ujian Selesai! Nilai Anda: ${nilaiAkhir}`);
+            } catch(e) { 
+                alert("Nilai telah dikalkulasi, namun gagal terhubung ke server untuk menyimpan."); 
+            }
             logout();
         }
     </script>
