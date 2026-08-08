@@ -47,7 +47,6 @@
     <div id="login-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 99999; display: flex; align-items: center; justify-content: center;">
         <div style="background: var(--card-bg); padding: 40px; border-radius: 16px; width: 90%; max-width: 400px; box-shadow: var(--shadow-md);">
             <div style="text-align: center; margin-bottom: 25px;">
-                <!-- LOGO DI HALAMAN LOGIN -->
                 <img src="Logo.jpg" alt="Logo SANG21" class="logo-img" onerror="this.style.display='none'">
                 <h2 style="color: var(--primary-color); margin:0;">SANG21 CBT</h2>
                 <small style="color: var(--text-muted);">SDN 21 Sanggalea</small>
@@ -64,7 +63,6 @@
     <!-- SIDEBAR NAVIGATION -->
     <nav class="sidebar" id="sidebar" style="display: none;">
         <div style="text-align: center; margin-bottom: 30px;">
-            <!-- LOGO DI SIDEBAR -->
             <img src="Logo.jpg" alt="Logo" class="sidebar-logo" onerror="this.style.display='none'">
             <h3 style="color: #f8fafc; margin: 0;">SANG21 CBT</h3>
         </div>
@@ -163,7 +161,8 @@
             
             <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 15px;">
                 <button class="btn btn-danger" onclick="tutupModalSoal()">Batal</button>
-                <button class="btn btn-primary" onclick="saveSoal()">Simpan ke Database</button>
+                <!-- PERUBAHAN ONCLICK ADA DI TOMBOL INI -->
+                <button class="btn btn-primary" onclick="saveSoal(event)">Simpan ke Database</button>
             </div>
         </div>
     </div>
@@ -196,7 +195,7 @@
     </div>
 
     <script>
-        // MASUKKAN URL GOOGLE APPS SCRIPT ANDA DI SINI YAA BRO
+        // URL WEB APP GAS ANDA
         const GAS_URL = "https://script.google.com/macros/s/AKfycbzkesAgOJRGSdB62CsZncnclEy4bADhVYsd6nlDMFMQNlTMWzFrCVrdKzyBSbUCtYJM/exec";
         
         let dataSiswaLokal = [], dataGuruLokal = [], bankSoalLokal = [];
@@ -348,14 +347,17 @@
             document.getElementById('modal-soal').style.display = 'none';
         }
 
-        async function saveSoal() {
-            const btn = event.target;
-            btn.innerHTML = 'Menyimpan...'; btn.disabled = true;
+        // --- FUNGSI SAVE SOAL YANG SUDAH DIPERBAIKI ---
+        async function saveSoal(ev) {
+            if (ev) ev.preventDefault();
+            const btn = ev ? ev.target : document.activeElement;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'Menyimpan...'; 
+            btn.disabled = true;
             
             const existingId = document.getElementById('soal-id').value;
             const actionType = existingId ? "editSoal" : "simpanSoal";
             const idSoal = existingId ? existingId : String(Date.now());
-
             const jenis = document.getElementById('soal-jenis').value;
 
             const payload = {
@@ -377,14 +379,26 @@
             };
 
             try {
-                const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
-                if(res.ok) {
+                const res = await fetch(GAS_URL, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload) 
+                });
+                const result = await res.json();
+                
+                if (result && result.result === "success") {
                     alert("Soal berhasil disimpan!");
                     tutupModalSoal();
                     loadBankSoal();
-                } else { alert("Gagal menyimpan soal."); }
-            } catch(e) { alert("Kesalahan koneksi ke server."); }
-            btn.innerHTML = 'Simpan ke Database'; btn.disabled = false;
+                } else { 
+                    alert("Gagal menyimpan soal: " + (result.message || "Respon server tidak valid")); 
+                }
+            } catch(e) { 
+                alert("Kesalahan koneksi ke server. Pastikan Web App GAS sudah di-deploy versi baru."); 
+            }
+            
+            btn.innerHTML = originalText; 
+            btn.disabled = false;
         }
 
         async function hapusSoal(id) {
