@@ -7,179 +7,52 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            /* Palet Warna Modern Indigo */
-            --primary-color: #4f46e5;
-            --primary-hover: #4338ca;
-            --danger-color: #ef4444;
-            --danger-hover: #dc2626;
-            --success-color: #10b981;
-            --success-hover: #059669;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-color: #1e293b;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --sidebar-bg: #0f172a;
-            --sidebar-hover: #1e293b;
-            
-            /* Variabel Efek */
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --radius-md: 8px;
-            --radius-lg: 16px;
+            --primary-color: #4f46e5; --primary-hover: #4338ca;
+            --danger-color: #ef4444; --danger-hover: #dc2626;
+            --success-color: #10b981; --success-hover: #059669;
+            --bg-color: #f8fafc; --card-bg: #ffffff;
+            --text-color: #1e293b; --text-muted: #64748b;
+            --border-color: #e2e8f0; --sidebar-bg: #0f172a; --sidebar-hover: #1e293b;
+            --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --radius-md: 8px; --radius-lg: 16px;
         }
-
-        body { 
-            margin: 0; 
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: var(--bg-color); 
-            color: var(--text-color); 
-            display: flex; 
-            height: 100vh; 
-            overflow: hidden; 
-        }
-
-        /* Form & Buttons */
-        .form-control { 
-            width: 100%; 
-            padding: 12px 15px; 
-            margin-bottom: 15px; 
-            border: 1.5px solid var(--border-color); 
-            border-radius: var(--radius-md); 
-            box-sizing: border-box; 
-            font-size: 14px;
-            transition: all 0.3s ease;
-            background-color: #fcfcfc;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
-            background-color: var(--card-bg);
-        }
-
-        .btn { 
-            padding: 12px 20px; 
-            border: none; 
-            border-radius: var(--radius-md); 
-            cursor: pointer; 
-            font-weight: 600; 
-            font-size: 14px;
-            color: white; 
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-primary { background: var(--primary-color); box-shadow: var(--shadow-sm); }
-        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: var(--shadow-md); }
-        .btn-danger { background: var(--danger-color); }
-        .btn-danger:hover { background: var(--danger-hover); }
-        .btn-success { background: var(--success-color); }
-        .btn-success:hover { background: var(--success-hover); }
-
-        /* Layout & Sidebar */
-        .sidebar { 
-            width: 260px; 
-            background: var(--sidebar-bg); 
-            color: white; 
-            display: flex; 
-            flex-direction: column; 
-            padding: 25px 0; 
-            box-shadow: var(--shadow-lg);
-            z-index: 10;
-        }
-
-        .sidebar h3 { text-align: center; margin-bottom: 30px; font-weight: 800; letter-spacing: 1px; color: #f8fafc; }
-
+        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-color); color: var(--text-color); display: flex; height: 100vh; overflow: hidden; }
+        .form-control { width: 100%; padding: 12px 15px; margin-bottom: 15px; border: 1.5px solid var(--border-color); border-radius: var(--radius-md); box-sizing: border-box; background-color: #fcfcfc; }
+        .btn { padding: 12px 20px; border: none; border-radius: var(--radius-md); cursor: pointer; font-weight: 600; color: white; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-primary { background: var(--primary-color); } .btn-danger { background: var(--danger-color); } .btn-success { background: var(--success-color); }
+        .sidebar { width: 260px; background: var(--sidebar-bg); color: white; display: flex; flex-direction: column; padding: 25px 0; z-index: 10; }
+        .sidebar h3 { text-align: center; font-weight: 800; color: #f8fafc; }
         .nav-links { list-style: none; padding: 0; margin: 0; }
-        .nav-links li a { 
-            display: block; padding: 15px 25px; color: #cbd5e1; text-decoration: none; 
-            transition: all 0.2s ease; border-left: 3px solid transparent;
-        }
-        .nav-links li a:hover { background: var(--sidebar-hover); color: white; border-left: 3px solid var(--primary-color); }
-
-        /* Main Content & Cards */
+        .nav-links li a { display: block; padding: 15px 25px; color: #cbd5e1; text-decoration: none; }
         .main-content { flex: 1; padding: 30px; overflow-y: auto; }
-        .page-section { 
-            display: none; background: var(--card-bg); padding: 30px; 
-            border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);
-        }
-        .active-section { display: block; animation: fadeIn 0.4s ease; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Modal & Exam UI */
-        .modal { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
-            align-items: center; justify-content: center; z-index: 1000; 
-        }
-
-        .modal-content { 
-            background: var(--card-bg); padding: 30px; border-radius: var(--radius-lg); 
-            width: 90%; max-width: 550px; max-height: 90vh; overflow-y: auto;
-            box-shadow: var(--shadow-lg); animation: zoomIn 0.3s ease;
-        }
-
-        @keyframes zoomIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-
-        .exam-interface { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: var(--bg-color); z-index: 2000; padding: 30px; box-sizing: border-box; overflow-y: auto; 
-        }
-
-        .exam-header { 
-            display: flex; justify-content: space-between; align-items: center; 
-            border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 30px;
-            background: var(--card-bg); padding: 15px 25px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
-        }
-
-        #timer { font-size: 28px; font-weight: 800; color: var(--danger-color); letter-spacing: 2px; }
-
-        /* Footer */
-        .footer-sekolah {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background-color: var(--card-bg); color: var(--text-muted); text-align: center;
-            padding: 15px 0; font-size: 13px; border-top: 1px solid var(--border-color);
-            z-index: 999999; box-shadow: 0 -4px 6px -1px rgba(0,0,0,0.05);
-        }
-
+        .page-section { display: none; background: var(--card-bg); padding: 30px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); }
+        .active-section { display: block; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); align-items: center; justify-content: center; z-index: 1000; }
+        .modal-content { background: var(--card-bg); padding: 30px; border-radius: var(--radius-lg); width: 90%; max-width: 550px; max-height: 90vh; overflow-y: auto; }
+        .exam-interface { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 2000; padding: 30px; overflow-y: auto; }
+        .exam-header { display: flex; justify-content: space-between; align-items: center; background: var(--card-bg); padding: 15px 25px; border-radius: var(--radius-lg); margin-bottom: 30px; }
+        #timer { font-size: 28px; font-weight: 800; color: var(--danger-color); }
+        .footer-sekolah { position: fixed; bottom: 0; width: 100%; background-color: var(--card-bg); text-align: center; padding: 15px 0; font-size: 13px; z-index: 999999; }
         .main-content, .exam-interface { padding-bottom: 80px !important; }
-        
         .nav-buttons { display: flex; justify-content: space-between; margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 20px;}
     </style>
 </head>
 <body>
 
-    <!-- LAYAR LOGIN SANG21 -->
+    <!-- LAYAR LOGIN -->
     <div id="login-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 99999; display: flex; align-items: center; justify-content: center;">
-        <div style="background: var(--card-bg); padding: 40px; border-radius: 16px; width: 90%; max-width: 400px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color);">
+        <div style="background: var(--card-bg); padding: 40px; border-radius: 16px; width: 90%; max-width: 400px; box-shadow: var(--shadow-lg);">
             <div style="text-align: center; margin-bottom: 25px;">
-                <h2 style="color: var(--primary-color); margin-bottom: 5px;">SANG21 CBT</h2>
-                <p style="color: var(--text-muted); font-size: 14px;">Silakan masuk untuk melanjutkan</p>
+                <h2 style="color: var(--primary-color);">SANG21 CBT</h2>
             </div>
-            
-            <div class="form-group">
-                <label style="font-weight: 600; display:block; margin-bottom: 8px;">Masuk Sebagai:</label>
-                <select id="login-role" class="form-control" onchange="toggleLoginType()" style="margin-bottom: 15px; font-weight: bold;">
-                    <option value="siswa">Siswa (Gunakan NIS)</option>
-                    <option value="guru">Guru Kelas (Gunakan NIP/NIG)</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label style="font-weight: 600; display:block; margin-bottom: 8px;">ID Pengguna:</label>
-                <input type="text" id="login-id" class="form-control" placeholder="Ketik NIS Anda di sini..." style="margin-bottom: 20px;">
-            </div>
-            
-            <button class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 16px;" onclick="prosesLogin(event)">
-                <i class="fas fa-sign-in-alt"></i> Masuk Sistem
-            </button>
+            <select id="login-role" class="form-control" onchange="toggleLoginType()">
+                <option value="siswa">Siswa (Gunakan NIS)</option>
+                <option value="guru">Guru Kelas (Gunakan NIP/NIG)</option>
+            </select>
+            <input type="text" id="login-id" class="form-control" placeholder="Ketik NIS Anda di sini...">
+            <button class="btn btn-primary" style="width: 100%;" onclick="prosesLogin(event)">Masuk Sistem</button>
         </div>
     </div>
 
@@ -187,204 +60,118 @@
     <nav class="sidebar" id="sidebar" style="display: none;">
         <h3>SANG21</h3>
         <ul class="nav-links">
-            <li id="menu-dashboard"><a href="#" onclick="navigate('dashboard')"><i class="fas fa-home"></i> Dashboard</a></li>
-            <li id="menu-bank-soal"><a href="#" onclick="navigate('bank-soal')"><i class="fas fa-database"></i> Bank Soal</a></li>
-            <li id="menu-ujian"><a href="#" onclick="navigate('ujian')"><i class="fas fa-laptop-code"></i> Ruang Ujian</a></li>
-            <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
+            <li id="menu-dashboard"><a href="#" onclick="navigate('dashboard')">Dashboard</a></li>
+            <li id="menu-bank-soal"><a href="#" onclick="navigate('bank-soal')">Bank Soal</a></li>
+            <li id="menu-ujian"><a href="#" onclick="navigate('ujian')">Ruang Ujian</a></li>
+            <li><a href="#" onclick="logout()">Keluar</a></li>
         </ul>
     </nav>
 
-    <!-- KONTEN UTAMA -->
+    <!-- KONTEN -->
     <div class="main-content">
-        <section id="dashboard" class="page-section">
-            <h2>Dashboard Guru</h2>
-            <p>Selamat datang di sistem manajemen ujian CBT SANG21.</p>
-        </section>
-
+        <section id="dashboard" class="page-section"><h2>Dashboard Guru</h2></section>
+        
         <section id="bank-soal" class="page-section">
             <h2>Bank Soal</h2>
             <button class="btn btn-primary" onclick="document.getElementById('modal-soal').style.display='flex'">+ Tambah Soal</button>
-            <div id="list-soal" style="margin-top: 20px; font-weight: 500; color: var(--text-muted);">Belum ada soal ditambahkan.</div>
+            <div id="list-soal" style="margin-top: 20px;">Data soal akan masuk ke Spreadsheet.</div>
         </section>
 
         <section id="ujian" class="page-section">
             <h2>Ruang Ujian Siswa</h2>
-            
-            <!-- Form Input Token -->
-            <div style="max-width: 400px; margin-top: 20px; background: white; padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
-                <div class="form-group">
-                    <label style="font-weight: 600; display:block; margin-bottom: 8px;">Token Validasi:</label>
-                    <input type="text" id="exam-token" placeholder="Masukkan Token dari Guru" class="form-control">
-                </div>
-                <button class="btn btn-primary" style="width: 100%; margin-top: 10px;" onclick="cekTokenUjian()">
-                    <i class="fas fa-search"></i> Cek Token Ujian
-                </button>
-            </div>
+            <input type="text" id="exam-token" placeholder="Masukkan Token" class="form-control" style="max-width: 400px;">
+            <button class="btn btn-primary" onclick="cekTokenUjian()">Cek Token Ujian</button>
 
-            <!-- PANEL KONFIRMASI (Akan Muncul Setelah Token Dicek) -->
-            <div id="panel-konfirmasi" style="display: none; max-width: 400px; margin-top: 20px; background: #eef2ff; padding: 20px; border-radius: var(--radius-md); border: 2px dashed var(--primary-color);">
-                <h4 style="margin-top: 0; color: var(--primary-color); text-align: center;">Detail Ujian Ditemukan!</h4>
-                
-                <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-                    <p style="margin: 5px 0; font-size: 15px;"><strong>Mata Pelajaran :</strong> <span id="info-mapel" style="color: var(--danger-color); font-weight: bold;">-</span></p>
-                    <p style="margin: 5px 0; font-size: 15px;"><strong>Untuk Kelas :</strong> <span id="info-kelas" style="font-weight: bold;">-</span></p>
-                    <p style="margin: 5px 0; font-size: 15px;"><strong>Jumlah Soal :</strong> <span id="info-jumlah" style="font-weight: bold;">-</span> Soal</p>
-                </div>
-                
-                <div class="form-group">
-                    <label style="font-weight: 600; display:block; margin-bottom: 8px;">Durasi Waktu (Menit):</label>
-                    <input type="number" id="exam-duration" placeholder="Contoh: 90" class="form-control" value="60">
-                </div>
-                
-                <button class="btn btn-success" style="width: 100%; margin-top: 10px;" onclick="startExam()">
-                    <i class="fas fa-play-circle"></i> Mulai Kerjakan Sekarang
-                </button>
+            <div id="panel-konfirmasi" style="display: none; max-width: 400px; margin-top: 20px; background: #eef2ff; padding: 20px; border-radius: var(--radius-md);">
+                <h4>Detail Ujian Ditemukan!</h4>
+                <p>Mata Pelajaran: <span id="info-mapel">-</span></p>
+                <p>Kelas: <span id="info-kelas">-</span></p>
+                <p>Jumlah Soal: <span id="info-jumlah">-</span></p>
+                <input type="number" id="exam-duration" placeholder="Durasi (Menit)" class="form-control" value="60">
+                <button class="btn btn-success" style="width: 100%;" onclick="startExam()">Mulai Kerjakan</button>
             </div>
         </section>
     </div>
 
-    <!-- Modal Tambah Soal (GURU) -->
+    <!-- MODAL SOAL -->
     <div id="modal-soal" class="modal">
         <div class="modal-content">
-            <h3 style="margin-top: 0;">Tambah Soal Baru</h3>
-            
-            <!-- FITUR: PILIH KELAS -->
-            <label style="font-weight: 600; display:block; margin-bottom: 5px;">Kelas:</label>
-            <select id="soal-kelas" class="form-control" required>
-                <option value="5A">Kelas 5A</option>
-                <option value="5B">Kelas 5B</option>
-                <option value="5C">Kelas 5C</option>
-                <option value="6A">Kelas 6A</option>
-                <option value="6B">Kelas 6B</option>
+            <h3>Tambah Soal Baru</h3>
+            <select id="soal-kelas" class="form-control">
+                <option value="5A">Kelas 5A</option><option value="5B">Kelas 5B</option><option value="6A">Kelas 6A</option>
             </select>
-            
-            <!-- FITUR: NAMA MATA PELAJARAN -->
-            <label style="font-weight: 600; display:block; margin-bottom: 5px;">Mata Pelajaran:</label>
-            <input type="text" id="soal-mapel" class="form-control" placeholder="Contoh: Matematika, Bahasa Indonesia" required>
-            
-            <label style="font-weight: 600; display:block; margin-bottom: 5px;">Jenis Soal:</label>
-            <select id="soal-jenis" class="form-control" onchange="toggleOpsiJawaban()" required>
-                <option value="pilihan_ganda">Pilihan Ganda</option>
-                <option value="pilihan_ganda_hots">Pilihan Ganda HOTS</option>
-                <option value="isian">Isian Singkat</option>
-                <option value="essay">Essay / Uraian</option>
+            <input type="text" id="soal-mapel" class="form-control" placeholder="Mata Pelajaran">
+            <select id="soal-jenis" class="form-control" onchange="toggleOpsiJawaban()">
+                <option value="pilihan_ganda">Pilihan Ganda</option><option value="essay">Essay</option>
             </select>
+            <input type="number" id="soal-bobot" class="form-control" placeholder="Bobot" value="10">
+            <input type="url" id="soal-gambar" class="form-control" placeholder="URL Gambar">
+            <textarea id="soal-teks" class="form-control" placeholder="Teks soal..."></textarea>
             
-            <label style="font-weight: 600; display:block; margin-bottom: 5px;">Bobot Nilai (Skor Maksimal):</label>
-            <input type="number" id="soal-bobot" class="form-control" placeholder="Contoh: 10" value="10" required>
-            
-            <input type="url" id="soal-gambar" class="form-control" placeholder="URL Gambar (Opsional) - Tempel link di sini...">
-            <textarea id="soal-teks" class="form-control" rows="4" placeholder="Ketik teks pertanyaan di sini..."></textarea>
-            
-            <!-- Area Opsi Jawaban (Khusus PG) -->
-            <div id="area-opsi-pg" style="background: #f8fafc; padding: 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid var(--border-color);">
-                <label style="font-weight: 600; display:block; margin-bottom: 8px;">Pilihan Jawaban:</label>
-                <input type="text" id="opsi-a" class="form-control" placeholder="Pilihan A" style="margin-bottom: 8px;">
-                <input type="text" id="opsi-b" class="form-control" placeholder="Pilihan B" style="margin-bottom: 8px;">
-                <input type="text" id="opsi-c" class="form-control" placeholder="Pilihan C" style="margin-bottom: 8px;">
-                <input type="text" id="opsi-d" class="form-control" placeholder="Pilihan D" style="margin-bottom: 0;">
+            <div id="area-opsi-pg">
+                <input type="text" id="opsi-a" class="form-control" placeholder="Pilihan A">
+                <input type="text" id="opsi-b" class="form-control" placeholder="Pilihan B">
+                <input type="text" id="opsi-c" class="form-control" placeholder="Pilihan C">
+                <input type="text" id="opsi-d" class="form-control" placeholder="Pilihan D">
             </div>
-
-            <input type="text" id="soal-kunci" class="form-control" placeholder="Kunci Jawaban (Contoh: A)">
-            
-            <div style="margin-top: 15px; text-align: right;">
-                <button class="btn btn-danger" onclick="document.getElementById('modal-soal').style.display='none'">Batal</button>
-                <button class="btn btn-primary" onclick="saveSoal()">Simpan</button>
-            </div>
+            <input type="text" id="soal-kunci" class="form-control" placeholder="Kunci Jawaban">
+            <button class="btn btn-primary" onclick="saveSoal()">Simpan ke Database</button>
+            <button class="btn btn-danger" onclick="document.getElementById('modal-soal').style.display='none'">Tutup</button>
         </div>
     </div>
 
-    <!-- Antarmuka Ujian Berlangsung (SISWA) -->
+    <!-- ANTARMUKA UJIAN -->
     <div id="exam-interface" class="exam-interface">
         <div class="exam-header">
             <div>
-                <h3 id="exam-student-name" style="margin:0; color: var(--primary-color);">Nama Siswa</h3>
-                <span id="exam-progress" style="font-size: 14px; color: var(--text-muted);">Soal 1 dari 1</span>
+                <h3 id="exam-student-name">Nama Siswa</h3>
+                <span id="exam-progress">Soal 1</span>
             </div>
             <div id="timer">00:00:00</div>
         </div>
-        <div style="max-width: 800px; margin: 0 auto; background: var(--card-bg); padding: 30px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-top: 0; margin-bottom: 15px;">
-                <h4 id="current-q-label" style="margin: 0; color: var(--text-muted);">Soal No. 1</h4>
-                <span id="current-q-bobot" style="background: #e0e7ff; color: #4338ca; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold;">Bobot: 10</span>
-            </div>
-            
-            <!-- Tempat Soal -->
-            <div id="current-q-text" style="font-size: 18px; margin-bottom: 25px; line-height: 1.6;"></div>
-            
-            <!-- Tempat Input Jawaban Isian / Essay -->
-            <div class="form-group" id="container-answer-input">
-                <textarea id="answer-input" class="form-control" rows="4" placeholder="Ketik jawabanmu di sini..."></textarea>
-            </div>
-            
-            <!-- Navigasi Soal -->
+        <div style="max-width: 800px; margin: 0 auto; background: var(--card-bg); padding: 30px; border-radius: var(--radius-lg);">
+            <div id="current-q-text"></div>
+            <div id="container-answer-input"><textarea id="answer-input" class="form-control"></textarea></div>
             <div class="nav-buttons">
-                <button class="btn" style="background: var(--text-muted);" id="btn-prev" onclick="navigasiSoal(-1)"><i class="fas fa-arrow-left"></i> Sebelumnya</button>
-                <button class="btn btn-primary" id="btn-next" onclick="navigasiSoal(1)">Selanjutnya <i class="fas fa-arrow-right"></i></button>
-                <button class="btn btn-success" id="btn-submit" style="display: none;" onclick="submitExam(false)"><i class="fas fa-check-circle"></i> Selesai Ujian</button>
+                <button class="btn" id="btn-prev" onclick="navigasiSoal(-1)">Sebelumnya</button>
+                <button class="btn btn-primary" id="btn-next" onclick="navigasiSoal(1)">Selanjutnya</button>
+                <button class="btn btn-success" id="btn-submit" onclick="submitExam(false)" style="display:none;">Selesai</button>
             </div>
         </div>
     </div>
 
-    <!-- SCRIPT JAVASCRIPT -->
     <script>
-        // GANTI URL DI BAWAH INI DENGAN URL DEPLOYMENT GAS MILIK ANDA
+        // MASUKKAN URL GAS MILIK ANDA DI SINI
         const GAS_URL = "https://script.google.com/macros/s/AKfycbx7iK3clW-C9-PSuch67KDJgeMFHXK_dXoGobd3lDIaSyLEQTD0g1H_jLmEd6y3Ip7i/exec";
         
-        let dataSiswaLokal = [];
-        let dataGuruLokal = [];
-        let bankSoalLokal = JSON.parse(localStorage.getItem('soal_cbt_sang21')) || [];
-        let examInterval;
-        let isExamRunning = false;
-        let indexSoalAktif = 0;
-        let jawabanSiswa = {};
+        let dataSiswaLokal = [], dataGuruLokal = [], bankSoalLokal = [];
+        let examInterval, indexSoalAktif = 0, jawabanSiswa = {};
 
-        // ================= SISTEM LOGIN =================
         function toggleLoginType() {
-            const role = document.getElementById('login-role').value;
-            const inputId = document.getElementById('login-id');
-            inputId.placeholder = role === 'guru' ? "Ketik NIP / NIG Anda di sini..." : "Ketik NIS Anda di sini...";
-            inputId.value = "";
+            document.getElementById('login-id').placeholder = document.getElementById('login-role').value === 'guru' ? "Ketik NIP..." : "Ketik NIS...";
         }
 
         async function prosesLogin(e) {
             const role = document.getElementById('login-role').value;
             const idInput = document.getElementById('login-id').value.trim();
-            const btn = e.target;
+            if(!idInput) return alert("Isi ID dulu!");
             
-            if(!idInput) { alert("ID Pengguna tidak boleh kosong!"); return; }
-
-            const originalBtnHtml = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memeriksa...';
-            btn.disabled = true;
-            
+            e.target.innerHTML = 'Memeriksa...'; e.target.disabled = true;
             try {
                 if(role === 'guru') {
-                    if(idInput === "admin" || idInput === "123456") {
-                        masukSebagaiGuru("Administrator");
-                    } else {
-                        if(dataGuruLokal.length === 0) {
-                            const res = await fetch(GAS_URL + "?action=getGuru");
-                            dataGuruLokal = await res.json();
-                        }
-                        const cekGuru = dataGuruLokal.find(g => String(g.nip) === idInput);
-                        if(cekGuru) masukSebagaiGuru(cekGuru.nama);
-                        else alert("Maaf, NIP/NIG tidak terdaftar.");
-                    }
+                    if(idInput === "admin") { masukSebagaiGuru("Admin"); return; }
+                    const res = await fetch(GAS_URL + "?action=getGuru");
+                    dataGuruLokal = await res.json();
+                    const cekGuru = dataGuruLokal.find(g => String(g.nip) === idInput);
+                    if(cekGuru) masukSebagaiGuru(cekGuru.nama); else alert("NIP tidak terdaftar.");
                 } else {
-                    if(dataSiswaLokal.length === 0) {
-                        const res = await fetch(GAS_URL + "?action=getSiswa");
-                        dataSiswaLokal = await res.json();
-                    }
+                    const res = await fetch(GAS_URL + "?action=getSiswa");
+                    dataSiswaLokal = await res.json();
                     const cekSiswa = dataSiswaLokal.find(s => String(s.nis) === idInput);
-                    if(cekSiswa) masukSebagaiSiswa(cekSiswa.nama, cekSiswa.nis);
-                    else alert("Maaf, NIS kamu tidak ditemukan.");
+                    if(cekSiswa) masukSebagaiSiswa(cekSiswa.nama, cekSiswa.nis); else alert("NIS tidak ditemukan.");
                 }
-            } catch(err) {
-                alert("Gagal terhubung ke server. Gunakan 'admin' di tab guru jika offline.");
-            }
-            btn.innerHTML = originalBtnHtml;
-            btn.disabled = false;
+            } catch(err) { alert("Gagal konek server."); }
+            e.target.innerHTML = 'Masuk Sistem'; e.target.disabled = false;
         }
 
         function masukSebagaiGuru(nama) {
@@ -392,291 +179,134 @@
             document.getElementById('sidebar').style.display = 'flex';
             document.querySelectorAll('.nav-links li').forEach(el => el.style.display = 'block');
             navigate('dashboard');
-            alert(`Selamat datang, ${nama}!`);
         }
 
         function masukSebagaiSiswa(nama, nis) {
-            sessionStorage.setItem('siswa_nama', nama);
-            sessionStorage.setItem('siswa_nis', nis);
-            
+            sessionStorage.setItem('siswa_nama', nama); sessionStorage.setItem('siswa_nis', nis);
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('sidebar').style.display = 'flex';
             document.getElementById('menu-dashboard').style.display = 'none';
             document.getElementById('menu-bank-soal').style.display = 'none';
-            
             navigate('ujian');
-            alert(`Halo, ${nama}! Semangat ujiannya.`);
         }
 
         function logout() { sessionStorage.clear(); location.reload(); }
+        function navigate(pageId) { document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active-section')); document.getElementById(pageId).classList.add('active-section'); }
+        function toggleOpsiJawaban() { document.getElementById('area-opsi-pg').style.display = document.getElementById('soal-jenis').value === 'pilihan_ganda' ? 'block' : 'none'; }
 
-        function navigate(pageId) {
-            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active-section'));
-            document.getElementById(pageId).classList.add('active-section');
-        }
-
-        // ================= BANK SOAL =================
-        function toggleOpsiJawaban() {
-            const jenis = document.getElementById('soal-jenis').value;
-            const areaOpsi = document.getElementById('area-opsi-pg');
-            const inputKunci = document.getElementById('soal-kunci');
+        async function saveSoal() {
+            const btn = event.target;
+            btn.innerHTML = 'Menyimpan...'; btn.disabled = true;
             
-            if (jenis === 'pilihan_ganda' || jenis === 'pilihan_ganda_hots') {
-                areaOpsi.style.display = 'block'; inputKunci.placeholder = "Kunci Jawaban (Contoh: A)";
-            } else {
-                areaOpsi.style.display = 'none'; inputKunci.placeholder = "Kunci Jawaban yang Diharapkan";
-            }
-        }
-
-        function saveSoal() {
-            const jenis = document.getElementById('soal-jenis').value;
-            let opsiData = null;
-            
-            if (jenis === 'pilihan_ganda' || jenis === 'pilihan_ganda_hots') {
-                opsiData = {
-                    A: document.getElementById('opsi-a').value, B: document.getElementById('opsi-b').value,
-                    C: document.getElementById('opsi-c').value, D: document.getElementById('opsi-d').value
-                };
-            }
-
-            // Merekam data Kelas dan Mapel
-            const kelas = document.getElementById('soal-kelas').value;
-            const mapel = document.getElementById('soal-mapel').value.trim();
-
             const payload = {
-                id: Date.now(),
-                kelas: kelas,
-                mapel: mapel,
-                jenis: jenis,
-                bobot: parseInt(document.getElementById('soal-bobot').value) || 10, 
-                gambar: document.getElementById('soal-gambar').value.trim(),
+                action: "simpanSoal", id: Date.now(),
+                kelas: document.getElementById('soal-kelas').value,
+                mapel: document.getElementById('soal-mapel').value,
+                jenis: document.getElementById('soal-jenis').value,
+                bobot: parseInt(document.getElementById('soal-bobot').value) || 10,
+                gambar: document.getElementById('soal-gambar').value,
                 soal: document.getElementById('soal-teks').value,
-                opsi: opsiData,
-                kunci: document.getElementById('soal-kunci').value.toUpperCase().trim()
+                opsi: document.getElementById('soal-jenis').value === 'pilihan_ganda' ? { A: document.getElementById('opsi-a').value, B: document.getElementById('opsi-b').value, C: document.getElementById('opsi-c').value, D: document.getElementById('opsi-d').value } : null,
+                kunci: document.getElementById('soal-kunci').value
             };
-            
-            if(!mapel) return alert("Mata Pelajaran tidak boleh kosong!");
-            if(!payload.soal) return alert("Soal tidak boleh kosong!");
-            
-           bankSoalLokal.push(payload);
-            
-            // FITUR BARU: Simpan permanen ke memori browser
-            localStorage.setItem('soal_cbt_sang21', JSON.stringify(bankSoalLokal));
-            
-            document.getElementById('modal-soal').style.display = 'none';
-            document.getElementById('modal-soal').style.display = 'none';
-            
-            // Info visual soal terakhir di Bank Soal
-            document.getElementById('list-soal').innerHTML = `Total <strong>${bankSoalLokal.length}</strong> soal tersimpan di draft lokal.<br><br> <span style="font-size:13px;">(Data Terakhir: <em>${mapel} - Kelas ${kelas}</em>)</span>`;
-            
-            // Bersihkan Form (Biarkan Kelas tetap seperti pilihan terakhir, reset mapel)
-            document.getElementById('soal-mapel').value = ""; 
-            document.getElementById('soal-gambar').value = ""; 
-            document.getElementById('soal-teks').value = "";
-            document.getElementById('soal-kunci').value = ""; 
-            document.getElementById('opsi-a').value = "";
-            document.getElementById('opsi-b').value = ""; 
-            document.getElementById('opsi-c').value = "";
-            document.getElementById('opsi-d').value = ""; 
-            document.getElementById('soal-bobot').value = "10";
+
+            try {
+                const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
+                if(res.ok) {
+                    alert("Soal berhasil disimpan ke Database!");
+                    document.getElementById('modal-soal').style.display = 'none';
+                }
+            } catch(e) { alert("Gagal simpan soal."); }
+            btn.innerHTML = 'Simpan ke Database'; btn.disabled = false;
         }
 
-        // ================= SISTEM UJIAN & SINKRONISASI GAS =================
-        
-        // Mengecek token dan menampilkan info Mapel & Kelas
-        function cekTokenUjian() {
-            const token = document.getElementById('exam-token').value;
-            if(!token) return alert("Masukkan token ujian terlebih dahulu!");
-            
-            if(bankSoalLokal.length === 0) return alert("Belum ada ujian yang aktif! Hubungi guru Anda.");
-
-            const infoMapel = bankSoalLokal[0].mapel || "Tidak Diketahui";
-            const infoKelas = bankSoalLokal[0].kelas || "Tidak Diketahui";
-            const jumlahSoal = bankSoalLokal.length;
-
-            document.getElementById('info-mapel').innerText = infoMapel.toUpperCase();
-            document.getElementById('info-kelas').innerText = infoKelas;
-            document.getElementById('info-jumlah').innerText = jumlahSoal;
-
-            document.getElementById('panel-konfirmasi').style.display = 'block';
+        async function cekTokenUjian() {
+            const btn = event.target;
+            btn.innerHTML = 'Loading...'; btn.disabled = true;
+            try {
+                const res = await fetch(GAS_URL + "?action=getSoal");
+                bankSoalLokal = await res.json();
+                
+                if(bankSoalLokal.length === 0) { alert("Belum ada soal."); btn.innerHTML = 'Cek Token Ujian'; btn.disabled = false; return; }
+                
+                document.getElementById('info-mapel').innerText = bankSoalLokal[0].mapel;
+                document.getElementById('info-kelas').innerText = bankSoalLokal[0].kelas;
+                document.getElementById('info-jumlah').innerText = bankSoalLokal.length;
+                document.getElementById('panel-konfirmasi').style.display = 'block';
+            } catch(e) { alert("Gagal tarik soal dari server."); }
+            btn.innerHTML = 'Cek Token Ujian'; btn.disabled = false;
         }
 
         function startExam() {
-            isExamRunning = true;
-            jawabanSiswa = {}; 
-            indexSoalAktif = 0; 
-            
+            jawabanSiswa = {}; indexSoalAktif = 0;
             document.getElementById('exam-interface').style.display = 'block';
-            document.getElementById('exam-student-name').innerText = sessionStorage.getItem('siswa_nama') || "Siswa Uji Coba";
-            
-            const inputMenit = parseInt(document.getElementById('exam-duration').value) || 60;
-            let sisaWaktu = inputMenit * 60;
-            
+            document.getElementById('exam-student-name').innerText = sessionStorage.getItem('siswa_nama');
+            let sisaWaktu = (parseInt(document.getElementById('exam-duration').value) || 60) * 60;
             examInterval = setInterval(() => {
                 if(sisaWaktu <= 0) { submitExam(true); return; }
                 sisaWaktu--;
-                const h = Math.floor(sisaWaktu / 3600).toString().padStart(2, '0');
-                const m = Math.floor((sisaWaktu % 3600) / 60).toString().padStart(2, '0');
-                const s = Math.floor(sisaWaktu % 60).toString().padStart(2, '0');
-                document.getElementById('timer').innerText = `${h}:${m}:${s}`;
+                document.getElementById('timer').innerText = `${Math.floor(sisaWaktu / 3600).toString().padStart(2,'0')}:${Math.floor((sisaWaktu % 3600) / 60).toString().padStart(2,'0')}:${Math.floor(sisaWaktu % 60).toString().padStart(2,'0')}`;
             }, 1000);
-
-            tampilkanSoal(indexSoalAktif);
+            tampilkanSoal(0);
         }
 
         function tampilkanSoal(index) {
             const soal = bankSoalLokal[index];
-            const labelJenis = soal.jenis.replace(/_/g, ' ').toUpperCase();
+            document.getElementById('exam-progress').innerText = `Soal ${index + 1} / ${bankSoalLokal.length}`;
+            let html = (soal.gambar ? `<img src="${soal.gambar}" style="max-width:100%;"><br>` : "") + soal.soal;
             
-            document.getElementById('exam-progress').innerText = `Soal ${index + 1} dari ${bankSoalLokal.length} | ${soal.mapel} - ${soal.kelas}`;
-            document.getElementById('current-q-label').innerText = `Soal No. ${index + 1} - [${labelJenis}]`;
-            document.getElementById('current-q-bobot').innerText = `Bobot: ${soal.bobot}`;
-            
-            let imageHtml = "";
-            if(soal.gambar && soal.gambar !== "") {
-                imageHtml = `<img src="${soal.gambar}" alt="Stimulus" style="max-width: 100%; max-height: 250px; border-radius: var(--radius-md); margin-bottom: 15px; border: 1px solid var(--border-color); display: block;">`;
-            }
-            
-            let htmlSoal = imageHtml + `<div>${soal.soal}</div>`;
-            const areaTextarea = document.getElementById('container-answer-input');
-            const jawabanTersimpan = jawabanSiswa[index] || ""; 
-            
-            if (soal.opsi) {
-                // Pilihan Ganda
-                htmlSoal += `<div style="margin-top: 20px; text-align: left;">`;
-                for (const [key, value] of Object.entries(soal.opsi)) {
-                    if (value) {
-                        const isChecked = (jawabanTersimpan === key) ? "checked" : "";
-                        htmlSoal += `
-                        <label style="display: block; padding: 12px 15px; border: 1px solid var(--border-color); border-radius: var(--radius-md); margin-bottom: 10px; cursor: pointer; background: #fff; transition: 0.2s;">
-                            <input type="radio" name="jawaban_siswa_radio" value="${key}" style="margin-right: 10px;" ${isChecked}> 
-                            <strong>${key}.</strong> ${value}
-                        </label>`;
-                    }
-                }
-                htmlSoal += `</div>`;
-                areaTextarea.style.display = 'none';
+            if(soal.opsi) {
+                html += `<div style="margin-top:20px;">`;
+                for(const [k,v] of Object.entries(soal.opsi)) if(v) html += `<label style="display:block;margin-bottom:10px;"><input type="radio" name="jwb" value="${k}" ${jawabanSiswa[index]===k?'checked':''}> ${k}. ${v}</label>`;
+                html += `</div>`;
+                document.getElementById('container-answer-input').style.display = 'none';
             } else {
-                // Isian / Essay
-                areaTextarea.style.display = 'block';
-                const inputArea = document.getElementById('answer-input');
-                inputArea.value = jawabanTersimpan; 
-                
-                if (soal.jenis === 'isian') {
-                    inputArea.rows = 2; inputArea.placeholder = "Ketik jawaban singkat di sini...";
-                } else {
-                    inputArea.rows = 5; inputArea.placeholder = "Ketik uraian/penjelasan jawabanmu secara lengkap di sini...";
-                }
+                document.getElementById('container-answer-input').style.display = 'block';
+                document.getElementById('answer-input').value = jawabanSiswa[index] || "";
             }
+            document.getElementById('current-q-text').innerHTML = html;
             
-            document.getElementById('current-q-text').innerHTML = htmlSoal;
-            
-            document.getElementById('btn-prev').style.visibility = (index === 0) ? "hidden" : "visible";
-            if(index === bankSoalLokal.length - 1) {
-                document.getElementById('btn-next').style.display = "none";
-                document.getElementById('btn-submit').style.display = "inline-flex";
-            } else {
-                document.getElementById('btn-next').style.display = "inline-flex";
-                document.getElementById('btn-submit').style.display = "none";
-            }
+            document.getElementById('btn-prev').style.visibility = index === 0 ? "hidden" : "visible";
+            document.getElementById('btn-next').style.display = index === bankSoalLokal.length - 1 ? "none" : "inline-flex";
+            document.getElementById('btn-submit').style.display = index === bankSoalLokal.length - 1 ? "inline-flex" : "none";
         }
 
         function simpanJawabanSementara() {
-            const soal = bankSoalLokal[indexSoalAktif];
-            if(!soal) return;
-            
-            if (soal.opsi) {
-                const radioTerpilih = document.querySelector('input[name="jawaban_siswa_radio"]:checked');
-                if (radioTerpilih) jawabanSiswa[indexSoalAktif] = radioTerpilih.value;
+            if(bankSoalLokal[indexSoalAktif].opsi) {
+                const checked = document.querySelector('input[name="jwb"]:checked');
+                if(checked) jawabanSiswa[indexSoalAktif] = checked.value;
             } else {
-                const teksJawaban = document.getElementById('answer-input').value;
-                jawabanSiswa[indexSoalAktif] = teksJawaban;
+                jawabanSiswa[indexSoalAktif] = document.getElementById('answer-input').value;
             }
         }
 
-        function navigasiSoal(arah) {
-            simpanJawabanSementara(); 
-            indexSoalAktif += arah;
-            tampilkanSoal(indexSoalAktif);
-        }
+        function navigasiSoal(arah) { simpanJawabanSementara(); indexSoalAktif += arah; tampilkanSoal(indexSoalAktif); }
 
         async function submitExam(force = false) {
-            if(!force && !confirm("Yakin ingin menyelesaikan ujian? Pastikan semua soal telah dijawab.")) return;
+            if(!force && !confirm("Selesai ujian?")) return;
+            clearInterval(examInterval); simpanJawabanSementara();
             
-            clearInterval(examInterval);
-            isExamRunning = false;
-            simpanJawabanSementara(); 
-            
-            let totalSkorDiperoleh = 0;
-            let totalSkorMaksimal = 0;
-            let adaEssay = false;
-
-            bankSoalLokal.forEach((soal, index) => {
-                let bobot = soal.bobot || 0;
-                totalSkorMaksimal += bobot;
-                let jwbSiswa = jawabanSiswa[index] || "";
-                
-                if (soal.jenis === 'pilihan_ganda' || soal.jenis === 'pilihan_ganda_hots') {
-                    if (jwbSiswa === soal.kunci) totalSkorDiperoleh += bobot;
-                } else if (soal.jenis === 'isian') {
-                    if (jwbSiswa.trim().toLowerCase() === soal.kunci.trim().toLowerCase()) totalSkorDiperoleh += bobot;
-                } else if (soal.jenis === 'essay') {
-                    adaEssay = true;
-                }
+            let totalSkor = 0, totalMax = 0;
+            bankSoalLokal.forEach((s, i) => {
+                totalMax += s.bobot;
+                if(s.opsi && jawabanSiswa[i] === s.kunci) totalSkor += s.bobot;
+                else if(!s.opsi && s.jenis === 'isian' && (jawabanSiswa[i]||'').toLowerCase() === s.kunci.toLowerCase()) totalSkor += s.bobot;
             });
 
-            let nilaiAkhir = (totalSkorMaksimal > 0) ? (totalSkorDiperoleh / totalSkorMaksimal) * 100 : 0;
-            nilaiAkhir = Math.round(nilaiAkhir * 100) / 100; 
-
-            const btnSubmit = document.getElementById('btn-submit');
-            if(btnSubmit) {
-                btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan Nilai...';
-                btnSubmit.disabled = true;
-            }
-
-            // MENGIRIM KELAS DAN MAPEL KE DATABASE GAS
-            const mapelUjian = bankSoalLokal.length > 0 ? bankSoalLokal[0].mapel : "-";
-            const kelasUjian = bankSoalLokal.length > 0 ? bankSoalLokal[0].kelas : "-";
-
-            const payloadData = {
-                action: "simpanNilai",
-                nis: sessionStorage.getItem('siswa_nis') || "-",
-                nama: sessionStorage.getItem('siswa_nama') || "Siswa Uji Coba",
-                kelas: kelasUjian,  
-                mapel: mapelUjian,  
-                nilai: nilaiAkhir,
-                jawaban: jawabanSiswa
+            document.getElementById('btn-submit').innerHTML = 'Menyimpan...';
+            
+            const payload = {
+                action: "simpanNilai", nis: sessionStorage.getItem('siswa_nis'), nama: sessionStorage.getItem('siswa_nama'),
+                kelas: bankSoalLokal[0].kelas, mapel: bankSoalLokal[0].mapel, nilai: (totalSkor/totalMax)*100, jawaban: jawabanSiswa
             };
 
-           try {
-                await fetch(GAS_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payloadData),
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    redirect: 'follow' // <-- Tambahkan baris ini
-                });
-                // ...
-                
-                let pesanHasil = `UJIAN SELESAI!\n\nSkor Anda: ${totalSkorDiperoleh} dari total maksimal ${totalSkorMaksimal}\nNilai Akhir: ${nilaiAkhir}`;
-                if(adaEssay) pesanHasil += `\n\n*Catatan: Nilai ini belum termasuk soal Essay karena butuh koreksi manual oleh Guru.`;
-                alert(pesanHasil);
-                
-            } catch(e) {
-                alert("Nilai berhasil dihitung (" + nilaiAkhir + "), namun periksa koneksi internet Anda untuk memastikannya tersimpan ke server Guru.");
-            }
-            
-            document.getElementById('exam-token').value = ""; 
-            document.getElementById('panel-konfirmasi').style.display = "none";
-            document.getElementById('exam-interface').style.display = "none";
+            try {
+                await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
+                alert(`Ujian Selesai! Nilai Anda: ${(totalSkor/totalMax)*100}`);
+            } catch(e) { alert("Nilai dihitung, tapi periksa koneksi internet."); }
             logout();
         }
     </script>
-    
-    <!-- FOOTER IDENTITAS SEKOLAH -->
-    <div class="footer-sekolah">
-        <span style="color: var(--primary-color); font-weight: bold;">SANG21 CBT</span> | 
-        Aplikasi ini dikembangkan oleh <strong>TIM Inovasi UPTD SDN 21 Sanggalea</strong>
-    </div>
-
+    <div class="footer-sekolah">SANG21 CBT | SDN 21 Sanggalea</div>
 </body>
 </html>
