@@ -648,12 +648,14 @@
                 jawaban: jawabanSiswa
             };
 
-            try {
+           try {
                 await fetch(GAS_URL, {
                     method: 'POST',
                     body: JSON.stringify(payloadData),
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    redirect: 'follow' // <-- Tambahkan baris ini
                 });
+                // ...
                 
                 let pesanHasil = `UJIAN SELESAI!\n\nSkor Anda: ${totalSkorDiperoleh} dari total maksimal ${totalSkorMaksimal}\nNilai Akhir: ${nilaiAkhir}`;
                 if(adaEssay) pesanHasil += `\n\n*Catatan: Nilai ini belum termasuk soal Essay karena butuh koreksi manual oleh Guru.`;
