@@ -161,7 +161,6 @@
             
             <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 15px;">
                 <button class="btn btn-danger" onclick="tutupModalSoal()">Batal</button>
-                <!-- PERUBAHAN ONCLICK ADA DI TOMBOL INI -->
                 <button class="btn btn-primary" onclick="saveSoal(event)">Simpan ke Database</button>
             </div>
         </div>
@@ -347,7 +346,6 @@
             document.getElementById('modal-soal').style.display = 'none';
         }
 
-        // --- FUNGSI SAVE SOAL YANG SUDAH DIPERBAIKI ---
         async function saveSoal(ev) {
             if (ev) ev.preventDefault();
             const btn = ev ? ev.target : document.activeElement;
@@ -498,22 +496,40 @@
             tampilkanSoal(indexSoalAktif); 
         }
 
+        // --- BAGIAN YANG DIPERBAIKI (PERHITUNGAN NILAI) ---
         async function submitExam(force = false) {
             if(!force && !confirm("Apakah Anda yakin ingin menyelesaikan ujian ini?")) return;
             clearInterval(examInterval); 
             simpanJawabanSementara();
             
             let totalSkor = 0, totalMax = 0;
+            
             bankSoalLokal.forEach((s, i) => {
-                totalMax += s.bobot;
-                if(s.jenis === 'pilihan_ganda' && jawabanSiswa[i] === s.kunci) {
-                    totalSkor += s.bobot;
-                } else if(s.jenis !== 'pilihan_ganda' && (jawabanSiswa[i]||'').toLowerCase().trim() === s.kunci.toLowerCase().trim()) {
-                    totalSkor += s.bobot;
+                // PERBAIKAN 1: Pastikan bobot terbaca sebagai angka
+                let bobotSoal = Number(s.bobot) || 10;
+                totalMax += bobotSoal;
+                
+                let jwbSiswa = jawabanSiswa[i] || "";
+                let kunciDB = s.kunci || "";
+
+                if(s.jenis === 'pilihan_ganda') {
+                    // PERBAIKAN 2: Ambil huruf pertama dan jadikan huruf besar (kapital)
+                    let kunciHuruf = kunciDB.toString().trim().charAt(0).toUpperCase();
+                    let jwbHuruf = jwbSiswa.toString().trim().toUpperCase();
+                    
+                    if(jwbHuruf === kunciHuruf) {
+                        totalSkor += bobotSoal;
+                    }
+                } else {
+                    // Penilaian untuk Essay / HOTS
+                    if(jwbSiswa.toLowerCase().trim() === kunciDB.toString().toLowerCase().trim()) {
+                        totalSkor += bobotSoal;
+                    }
                 }
             });
 
-            let nilaiAkhir = Math.round((totalSkor / totalMax) * 100);
+            // PERBAIKAN 3: Cegah nilai NaN (Not a Number) jika bank soal kosong/error
+            let nilaiAkhir = totalMax > 0 ? Math.round((totalSkor / totalMax) * 100) : 0;
             
             const payload = {
                 action: "simpanNilai", 
@@ -525,10 +541,14 @@
             };
 
             try {
-                await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
+                await fetch(GAS_URL, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload) 
+                });
                 alert(`Ujian Selesai! Nilai Anda: ${nilaiAkhir}`);
             } catch(e) { 
-                alert("Nilai telah dikalkulasi, namun gagal terhubung ke server untuk menyimpan."); 
+                alert("Nilai telah dikalkulasi: " + nilaiAkhir + " (namun gagal terhubung ke server untuk menyimpan)."); 
             }
             logout();
         }
