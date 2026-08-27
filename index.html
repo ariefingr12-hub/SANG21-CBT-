@@ -41,7 +41,7 @@
         .logo-img { width: 80px; height: 80px; object-fit: contain; margin-bottom: 15px; border-radius: 8px; }
         .sidebar-logo { width: 60px; height: 60px; object-fit: contain; margin-bottom: 10px; border-radius: 8px; }
         
-        /* Tambahan CSS untuk Halaman Hasil Ujian & Cetak */
+        /* CSS Untuk Tampilan Hasil & Cetak */
         .result-item { border: 1px solid var(--border-color); padding: 15px; border-radius: var(--radius-md); margin-bottom: 15px; background: #f8fafc; }
         .text-correct { color: var(--success-color); font-weight: bold; }
         .text-incorrect { color: var(--danger-color); font-weight: bold; }
@@ -58,6 +58,7 @@
 </head>
 <body>
 
+    <!-- SCREEN LOGIN -->
     <div id="login-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 99999; display: flex; align-items: center; justify-content: center;">
         <div style="background: var(--card-bg); padding: 40px; border-radius: 16px; width: 90%; max-width: 400px; box-shadow: var(--shadow-md);">
             <div style="text-align: center; margin-bottom: 25px;">
@@ -65,15 +66,33 @@
                 <h2 style="color: var(--primary-color); margin:0;">SANG21 CBT</h2>
                 <small style="color: var(--text-muted);">SDN 21 Sanggalea</small>
             </div>
+            
+            <label style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Tipe Pengguna:</label>
             <select id="login-role" class="form-control" onchange="toggleLoginType()">
                 <option value="siswa">Siswa (Gunakan NIS)</option>
                 <option value="guru">Guru Kelas (Gunakan NIP/NIG)</option>
             </select>
+
+            <!-- PILIHAN KELAS KHUSUS SISWA -->
+            <div id="container-kelas-login">
+                <label style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Pilih Kelas:</label>
+                <select id="login-kelas" class="form-control">
+                    <option value="">-- Pilih Kelas Anda --</option>
+                    <option value="5A">Kelas 5A</option>
+                    <option value="5B">Kelas 5B</option>
+                    <option value="6A">Kelas 6A</option>
+                    <option value="6B">Kelas 6B</option>
+                </select>
+            </div>
+
+            <label style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Nomor Induk (NIS / NIP):</label>
             <input type="text" id="login-id" class="form-control" placeholder="Ketik NIS Anda di sini...">
+            
             <button class="btn btn-primary" style="width: 100%;" onclick="prosesLogin(event)">Masuk Sistem</button> 
         </div>
     </div>
 
+    <!-- SIDEBAR NAVIGATION -->
     <nav class="sidebar" id="sidebar" style="display: none;">
         <div style="text-align: center; margin-bottom: 30px;">
             <img src="Logo.jpg" alt="Logo" class="sidebar-logo" onerror="this.style.display='none'">
@@ -87,12 +106,15 @@
         </ul>
     </nav>
 
+    <!-- KONTEN UTAMA -->
     <div class="main-content">
+        <!-- DASHBOARD GURU -->
         <section id="dashboard" class="page-section">
             <h2>Dashboard Guru</h2>
             <p>Selamat datang di sistem manajemen Ujian SANG21 CBT.</p>
         </section>
         
+        <!-- BANK SOAL -->
         <section id="bank-soal" class="page-section">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2>Bank Soal</h2>
@@ -104,6 +126,7 @@
             <div id="list-soal">Memuat daftar soal...</div>
         </section>
 
+        <!-- RUANG UJIAN -->
         <section id="ujian" class="page-section">
             <h2>Ruang Ujian Siswa</h2>
             <p>Masukkan Token Ujian untuk memulai mengerjakan soal.</p>
@@ -112,6 +135,7 @@
 
             <div id="panel-konfirmasi" style="display: none; max-width: 450px; margin-top: 20px; background: #eef2ff; padding: 20px; border-radius: var(--radius-md); border: 1px solid #c7d2fe;">
                 <h4 style="margin-top:0;">Detail Ujian Siap</h4>
+                <p>Nama Siswa: <strong id="info-siswa-nama">-</strong></p>
                 <p>Mata Pelajaran: <strong id="info-mapel">-</strong></p>
                 <p>Kelas: <strong id="info-kelas">-</strong></p>
                 <p>Jumlah Soal: <strong id="info-jumlah">-</strong></p>
@@ -122,6 +146,7 @@
         </section>
     </div>
 
+    <!-- MODAL TAMBAH / EDIT SOAL -->
     <div id="modal-soal" class="modal">
         <div class="modal-content">
             <h3 id="modal-soal-title" style="margin-top:0;">Tambah Soal Baru</h3>
@@ -155,6 +180,7 @@
             <label>Teks Pertanyaan / Soal:</label>
             <textarea id="soal-teks" class="form-control" rows="4" placeholder="Tuliskan pertanyaan di sini..."></textarea>
             
+            <!-- AREA PILIHAN GANDA -->
             <div id="area-opsi-pg">
                 <label>Pilihan Jawaban:</label>
                 <input type="text" id="opsi-a" class="form-control" placeholder="Opsi A">
@@ -173,6 +199,7 @@
         </div>
     </div>
 
+    <!-- INTERFACE LEMBAR UJIAN SISWA -->
     <div id="exam-interface" class="exam-interface">
         <div class="exam-header">
             <div>
@@ -185,6 +212,7 @@
             <div id="current-q-type" style="margin-bottom: 10px;"></div>
             <div id="current-q-text" style="font-size: 16px; line-height: 1.6; margin-bottom: 20px;"></div>
             
+            <!-- AREA JAWABAN ESSAY / HOTS -->
             <div id="container-answer-input" style="display: none;">
                 <label>Jawaban Anda:</label>
                 <textarea id="answer-input" class="form-control" rows="5" placeholder="Ketikkan jawaban lengkap Anda di sini..."></textarea>
@@ -198,6 +226,7 @@
         </div>
     </div>
 
+    <!-- INTERFACE HASIL & CETAK UJIAN -->
     <div id="result-interface" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 3000; padding: 30px; overflow-y: auto;">
         <div style="max-width: 800px; margin: 0 auto; background: var(--card-bg); padding: 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md);">
             <div class="no-print" style="text-align: right; margin-bottom: 20px; display: flex; justify-content: flex-end; gap: 10px;">
@@ -212,12 +241,13 @@
             
             <table style="width: 100%; margin-bottom: 30px; font-size: 16px;">
                 <tr><td width="150"><strong>Nama Siswa</strong></td><td width="20">:</td><td id="res-nama">-</td></tr>
+                <tr><td><strong>Kelas</strong></td><td>:</td><td id="res-kelas">-</td></tr>
                 <tr><td><strong>NIS</strong></td><td>:</td><td id="res-nis">-</td></tr>
                 <tr><td><strong>Mata Pelajaran</strong></td><td>:</td><td id="res-mapel">-</td></tr>
                 <tr><td><strong>Nilai Akhir</strong></td><td>:</td><td><strong id="res-nilai" style="font-size: 24px; color: var(--success-color);">-</strong> / 100</td></tr>
             </table>
             
-            <h3 style="margin-bottom: 15px;">Rincian Pekerjaan (Bahan Umpan Balik)</h3>
+            <h3 style="margin-bottom: 15px;">Rincian Pekerjaan (Bahan Umpan Balik Guru / Remedial)</h3>
             <div id="review-container"></div>
         </div>
     </div>
@@ -226,11 +256,13 @@
         // URL WEB APP GAS ANDA
         const GAS_URL = "https://script.google.com/macros/s/AKfycbzkesAgOJRGSdB62CsZncnclEy4bADhVYsd6nlDMFMQNlTMWzFrCVrdKzyBSbUCtYJM/exec";
         
-        let dataSiswaLokal = [], dataGuruLokal = [], bankSoalLokal = [];
+        let dataSiswaLokal = [], dataGuruLokal = [], bankSoalLokal = [], soalAktifSiswa = [];
         let examInterval, indexSoalAktif = 0, jawabanSiswa = {};
 
         function toggleLoginType() {
-            document.getElementById('login-id').placeholder = document.getElementById('login-role').value === 'guru' ? "Ketik NIP..." : "Ketik NIS...";
+            const role = document.getElementById('login-role').value;
+            document.getElementById('login-id').placeholder = role === 'guru' ? "Ketik NIP..." : "Ketik NIS...";
+            document.getElementById('container-kelas-login').style.display = role === 'siswa' ? 'block' : 'none';
         }
 
         async function prosesLogin(e) {
@@ -247,10 +279,16 @@
                     const cekGuru = dataGuruLokal.find(g => String(g.nip) === idInput);
                     if(cekGuru) masukSebagaiGuru(cekGuru.nama); else alert("NIP tidak terdaftar di sistem.");
                 } else {
+                    const kelasInput = document.getElementById('login-kelas').value;
+                    if(!kelasInput) {
+                        alert("Silakan pilih kelas Anda terlebih dahulu!");
+                        btn.innerHTML = 'Masuk Sistem'; btn.disabled = false;
+                        return;
+                    }
                     const res = await fetch(GAS_URL + "?action=getSiswa");
                     dataSiswaLokal = await res.json();
                     const cekSiswa = dataSiswaLokal.find(s => String(s.nis) === idInput);
-                    if(cekSiswa) masukSebagaiSiswa(cekSiswa.nama, cekSiswa.nis); else alert("NIS tidak terdaftar.");
+                    if(cekSiswa) masukSebagaiSiswa(cekSiswa.nama, cekSiswa.nis, kelasInput); else alert("NIS tidak terdaftar.");
                 }
             } catch(err) { alert("Gagal terhubung ke database. Periksa koneksi/URL GAS."); }
             btn.innerHTML = 'Masuk Sistem'; btn.disabled = false;
@@ -264,9 +302,11 @@
             loadBankSoal();
         }
 
-        function masukSebagaiSiswa(nama, nis) {
+        function masukSebagaiSiswa(nama, nis, kelas) {
             sessionStorage.setItem('siswa_nama', nama); 
             sessionStorage.setItem('siswa_nis', nis);
+            sessionStorage.setItem('siswa_kelas', kelas);
+            
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('sidebar').style.display = 'flex';
             document.getElementById('menu-dashboard').style.display = 'none';
@@ -447,15 +487,21 @@
                 const res = await fetch(GAS_URL + "?action=getSoal");
                 bankSoalLokal = await res.json();
                 
-                if(!bankSoalLokal || bankSoalLokal.length === 0) { 
-                    alert("Belum ada soal tersedia di database."); 
+                const siswaKelas = sessionStorage.getItem('siswa_kelas');
+                
+                // FILTER SOAL SESUAI KELAS SISWA
+                soalAktifSiswa = bankSoalLokal.filter(s => String(s.kelas).toUpperCase() === String(siswaKelas).toUpperCase());
+                
+                if(!soalAktifSiswa || soalAktifSiswa.length === 0) { 
+                    alert(`Belum ada soal yang tersedia untuk ${siswaKelas}.`); 
                     btn.innerHTML = 'Cek Token & Muat Soal'; btn.disabled = false; 
                     return; 
                 }
                 
-                document.getElementById('info-mapel').innerText = bankSoalLokal[0].mapel;
-                document.getElementById('info-kelas').innerText = bankSoalLokal[0].kelas;
-                document.getElementById('info-jumlah').innerText = bankSoalLokal.length + " Soal";
+                document.getElementById('info-siswa-nama').innerText = sessionStorage.getItem('siswa_nama');
+                document.getElementById('info-mapel').innerText = soalAktifSiswa[0].mapel;
+                document.getElementById('info-kelas').innerText = siswaKelas;
+                document.getElementById('info-jumlah').innerText = soalAktifSiswa.length + " Soal";
                 document.getElementById('panel-konfirmasi').style.display = 'block';
             } catch(e) { alert("Gagal mengambil data dari server."); }
             btn.innerHTML = 'Cek Token & Muat Soal'; btn.disabled = false;
@@ -464,7 +510,7 @@
         function startExam() {
             jawabanSiswa = {}; indexSoalAktif = 0;
             document.getElementById('exam-interface').style.display = 'block';
-            document.getElementById('exam-student-name').innerText = sessionStorage.getItem('siswa_nama');
+            document.getElementById('exam-student-name').innerText = `${sessionStorage.getItem('siswa_nama')} (${sessionStorage.getItem('siswa_kelas')})`;
             
             let sisaWaktu = (parseInt(document.getElementById('exam-duration').value) || 60) * 60;
             examInterval = setInterval(() => {
@@ -479,8 +525,8 @@
         }
 
         function tampilkanSoal(index) {
-            const soal = bankSoalLokal[index];
-            document.getElementById('exam-progress').innerText = `Soal ${index + 1} dari ${bankSoalLokal.length}`;
+            const soal = soalAktifSiswa[index];
+            document.getElementById('exam-progress').innerText = `Soal ${index + 1} dari ${soalAktifSiswa.length}`;
             
             let badgeClass = "badge-pg"; let jenisText = "Pilihan Ganda";
             if(soal.jenis === "essay") { badgeClass = "badge-essay"; jenisText = "Essay"; }
@@ -505,12 +551,13 @@
             document.getElementById('current-q-text').innerHTML = html;
             
             document.getElementById('btn-prev').style.visibility = index === 0 ? "hidden" : "visible";
-            document.getElementById('btn-next').style.display = index === bankSoalLokal.length - 1 ? "none" : "inline-flex";
-            document.getElementById('btn-submit').style.display = index === bankSoalLokal.length - 1 ? "inline-flex" : "none";
+            document.getElementById('btn-next').style.display = index === soalAktifSiswa.length - 1 ? "none" : "inline-flex";
+            document.getElementById('btn-submit').style.display = index === soalAktifSiswa.length - 1 ? "inline-flex" : "none";
         }
 
         function simpanJawabanSementara() {
-            const soal = bankSoalLokal[indexSoalAktif];
+            const soal = soalAktifSiswa[indexSoalAktif];
+            if(!soal) return;
             if(soal.jenis === 'pilihan_ganda') {
                 const checked = document.querySelector('input[name="jwb"]:checked');
                 if(checked) jawabanSiswa[indexSoalAktif] = checked.value;
@@ -525,21 +572,20 @@
             tampilkanSoal(indexSoalAktif); 
         }
 
-        // --- BAGIAN YANG DIBONGKAR/DIPERBAIKI ---
         async function submitExam(force = false) {
             if(!force && !confirm("Apakah Anda yakin ingin menyelesaikan ujian ini?")) return;
             clearInterval(examInterval); 
             simpanJawabanSementara();
             
             let totalSkor = 0, totalMax = 0;
-            let reviewHTML = ""; // Variabel untuk membangun tampilan evaluasi/transparansi
+            let reviewHTML = "";
             
-            bankSoalLokal.forEach((s, i) => {
+            soalAktifSiswa.forEach((s, i) => {
                 let bobotSoal = Number(s.bobot) || 10;
                 totalMax += bobotSoal;
                 
                 let jwbSiswaRaw = jawabanSiswa[i] || "";
-                let jwbSiswaTeks = jwbSiswaRaw; // Untuk ditampiilkan di UI
+                let jwbSiswaTeks = jwbSiswaRaw;
                 let kunciDB = s.kunci || "";
                 let status = "Salah";
                 let statusClass = "text-incorrect";
@@ -553,7 +599,6 @@
                         status = "Benar";
                         statusClass = "text-correct";
                     }
-                    // Konversi huruf ke teks opsi penuh jika siswa menjawab
                     if (jwbHuruf && s.opsi && s.opsi[jwbHuruf]) {
                         jwbSiswaTeks = jwbHuruf + ". " + s.opsi[jwbHuruf];
                     } else if (!jwbHuruf) {
@@ -568,7 +613,6 @@
                     if(!jwbSiswaRaw) jwbSiswaTeks = "<em>Tidak dijawab</em>";
                 }
 
-                // Bangun HTML untuk transparansi tiap soal
                 reviewHTML += `
                     <div class="result-item">
                         <p style="margin-top:0;"><strong>Soal ${i + 1}:</strong><br> ${s.soal}</p>
@@ -583,10 +627,11 @@
 
             let nilaiAkhir = totalMax > 0 ? Math.round((totalSkor / totalMax) * 100) : 0;
             
-            // Set Data Tampilan Hasil
+            // Render Rekap Lembar Hasil Ujian Siswa
             document.getElementById('res-nama').innerText = sessionStorage.getItem('siswa_nama');
+            document.getElementById('res-kelas').innerText = sessionStorage.getItem('siswa_kelas');
             document.getElementById('res-nis').innerText = sessionStorage.getItem('siswa_nis');
-            document.getElementById('res-mapel').innerText = bankSoalLokal[0].mapel;
+            document.getElementById('res-mapel').innerText = soalAktifSiswa[0].mapel;
             document.getElementById('res-nilai').innerText = nilaiAkhir;
             document.getElementById('review-container').innerHTML = reviewHTML;
             
@@ -594,12 +639,12 @@
                 action: "simpanNilai", 
                 nis: sessionStorage.getItem('siswa_nis'), 
                 nama: sessionStorage.getItem('siswa_nama'),
-                mapel: bankSoalLokal[0].mapel, 
+                kelas: sessionStorage.getItem('siswa_kelas'),
+                mapel: soalAktifSiswa[0].mapel, 
                 nilai: nilaiAkhir, 
-                jawaban: jawabanSiswa // Data JSON rincian akan dikirim ke DB jika server menangkapnya
+                jawaban: jawabanSiswa 
             };
 
-            // Tampilkan UI Hasil sebelum mengirim data agar siswa tidak merasa nge-hang
             document.getElementById('exam-interface').style.display = 'none';
             document.getElementById('result-interface').style.display = 'block';
 
@@ -610,9 +655,8 @@
                     body: JSON.stringify(payload) 
                 });
             } catch(e) { 
-                console.error("Gagal terhubung ke server untuk menyimpan nilai, tapi hasil sudah di kalkulasi lokal.");
+                console.error("Nilai berhasil dihitung di lokal.");
             }
-            // Logout kita pindahkan ke tombol di lembar transparansi, sehingga tidak otomatis logout.
         }
     </script>
     <div class="footer-sekolah">Aplikasi ini diKembangkan Oleh TIM SANG21 CBT | SDN 21 Sanggalea</div>
