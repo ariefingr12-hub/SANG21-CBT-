@@ -40,11 +40,24 @@
         .nav-buttons { display: flex; justify-content: space-between; margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 20px; }
         .logo-img { width: 80px; height: 80px; object-fit: contain; margin-bottom: 15px; border-radius: 8px; }
         .sidebar-logo { width: 60px; height: 60px; object-fit: contain; margin-bottom: 10px; border-radius: 8px; }
+        
+        /* Tambahan CSS untuk Halaman Hasil Ujian & Cetak */
+        .result-item { border: 1px solid var(--border-color); padding: 15px; border-radius: var(--radius-md); margin-bottom: 15px; background: #f8fafc; }
+        .text-correct { color: var(--success-color); font-weight: bold; }
+        .text-incorrect { color: var(--danger-color); font-weight: bold; }
+        
+        @media print {
+            body * { visibility: hidden; }
+            #result-interface, #result-interface * { visibility: visible; }
+            #result-interface { position: absolute; left: 0; top: 0; width: 100%; background: white; padding: 0; z-index: 99999; }
+            .no-print { display: none !important; }
+            .result-item { page-break-inside: avoid; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; background: #fff; }
+            .footer-sekolah { display: none !important; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- SCREEN LOGIN -->
     <div id="login-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 99999; display: flex; align-items: center; justify-content: center;">
         <div style="background: var(--card-bg); padding: 40px; border-radius: 16px; width: 90%; max-width: 400px; box-shadow: var(--shadow-md);">
             <div style="text-align: center; margin-bottom: 25px;">
@@ -61,7 +74,6 @@
         </div>
     </div>
 
-    <!-- SIDEBAR NAVIGATION -->
     <nav class="sidebar" id="sidebar" style="display: none;">
         <div style="text-align: center; margin-bottom: 30px;">
             <img src="Logo.jpg" alt="Logo" class="sidebar-logo" onerror="this.style.display='none'">
@@ -75,15 +87,12 @@
         </ul>
     </nav>
 
-    <!-- KONTEN UTAMA -->
     <div class="main-content">
-        <!-- DASHBOARD GURU -->
         <section id="dashboard" class="page-section">
             <h2>Dashboard Guru</h2>
             <p>Selamat datang di sistem manajemen Ujian SANG21 CBT.</p>
         </section>
         
-        <!-- BANK SOAL -->
         <section id="bank-soal" class="page-section">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2>Bank Soal</h2>
@@ -95,7 +104,6 @@
             <div id="list-soal">Memuat daftar soal...</div>
         </section>
 
-        <!-- RUANG UJIAN -->
         <section id="ujian" class="page-section">
             <h2>Ruang Ujian Siswa</h2>
             <p>Masukkan Token Ujian untuk memulai mengerjakan soal.</p>
@@ -114,7 +122,6 @@
         </section>
     </div>
 
-    <!-- MODAL TAMBAH / EDIT SOAL -->
     <div id="modal-soal" class="modal">
         <div class="modal-content">
             <h3 id="modal-soal-title" style="margin-top:0;">Tambah Soal Baru</h3>
@@ -148,7 +155,6 @@
             <label>Teks Pertanyaan / Soal:</label>
             <textarea id="soal-teks" class="form-control" rows="4" placeholder="Tuliskan pertanyaan di sini..."></textarea>
             
-            <!-- AREA PILIHAN GANDA -->
             <div id="area-opsi-pg">
                 <label>Pilihan Jawaban:</label>
                 <input type="text" id="opsi-a" class="form-control" placeholder="Opsi A">
@@ -167,7 +173,6 @@
         </div>
     </div>
 
-    <!-- INTERFACE LEMBAR UJIAN SISWA -->
     <div id="exam-interface" class="exam-interface">
         <div class="exam-header">
             <div>
@@ -180,7 +185,6 @@
             <div id="current-q-type" style="margin-bottom: 10px;"></div>
             <div id="current-q-text" style="font-size: 16px; line-height: 1.6; margin-bottom: 20px;"></div>
             
-            <!-- AREA JAWABAN ESSAY / HOTS -->
             <div id="container-answer-input" style="display: none;">
                 <label>Jawaban Anda:</label>
                 <textarea id="answer-input" class="form-control" rows="5" placeholder="Ketikkan jawaban lengkap Anda di sini..."></textarea>
@@ -191,6 +195,30 @@
                 <button class="btn btn-primary" id="btn-next" onclick="navigasiSoal(1)">Selanjutnya <i class="fa fa-arrow-right"></i></button>
                 <button class="btn btn-success" id="btn-submit" onclick="submitExam(false)" style="display:none;"><i class="fa fa-check"></i> Selesai Ujian</button>
             </div>
+        </div>
+    </div>
+
+    <div id="result-interface" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 3000; padding: 30px; overflow-y: auto;">
+        <div style="max-width: 800px; margin: 0 auto; background: var(--card-bg); padding: 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md);">
+            <div class="no-print" style="text-align: right; margin-bottom: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                <button class="btn btn-success" onclick="window.print()"><i class="fa fa-print"></i> Cetak Lembar Ini</button>
+                <button class="btn btn-danger" onclick="logout()"><i class="fa fa-sign-out-alt"></i> Tutup & Keluar</button>
+            </div>
+            
+            <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid var(--border-color); padding-bottom: 20px;">
+                <h2 style="margin: 0; color: var(--primary-color);">Laporan Hasil Ujian SANG21 CBT</h2>
+                <p style="margin: 5px 0 0 0; color: var(--text-muted);">SDN 21 Sanggalea</p>
+            </div>
+            
+            <table style="width: 100%; margin-bottom: 30px; font-size: 16px;">
+                <tr><td width="150"><strong>Nama Siswa</strong></td><td width="20">:</td><td id="res-nama">-</td></tr>
+                <tr><td><strong>NIS</strong></td><td>:</td><td id="res-nis">-</td></tr>
+                <tr><td><strong>Mata Pelajaran</strong></td><td>:</td><td id="res-mapel">-</td></tr>
+                <tr><td><strong>Nilai Akhir</strong></td><td>:</td><td><strong id="res-nilai" style="font-size: 24px; color: var(--success-color);">-</strong> / 100</td></tr>
+            </table>
+            
+            <h3 style="margin-bottom: 15px;">Rincian Pekerjaan (Bahan Umpan Balik)</h3>
+            <div id="review-container"></div>
         </div>
     </div>
 
@@ -497,40 +525,70 @@
             tampilkanSoal(indexSoalAktif); 
         }
 
-        // --- BAGIAN YANG DIPERBAIKI (PERHITUNGAN NILAI) ---
+        // --- BAGIAN YANG DIBONGKAR/DIPERBAIKI ---
         async function submitExam(force = false) {
             if(!force && !confirm("Apakah Anda yakin ingin menyelesaikan ujian ini?")) return;
             clearInterval(examInterval); 
             simpanJawabanSementara();
             
             let totalSkor = 0, totalMax = 0;
+            let reviewHTML = ""; // Variabel untuk membangun tampilan evaluasi/transparansi
             
             bankSoalLokal.forEach((s, i) => {
-                // PERBAIKAN 1: Pastikan bobot terbaca sebagai angka
                 let bobotSoal = Number(s.bobot) || 10;
                 totalMax += bobotSoal;
                 
-                let jwbSiswa = jawabanSiswa[i] || "";
+                let jwbSiswaRaw = jawabanSiswa[i] || "";
+                let jwbSiswaTeks = jwbSiswaRaw; // Untuk ditampiilkan di UI
                 let kunciDB = s.kunci || "";
+                let status = "Salah";
+                let statusClass = "text-incorrect";
 
                 if(s.jenis === 'pilihan_ganda') {
-                    // PERBAIKAN 2: Ambil huruf pertama dan jadikan huruf besar (kapital)
                     let kunciHuruf = kunciDB.toString().trim().charAt(0).toUpperCase();
-                    let jwbHuruf = jwbSiswa.toString().trim().toUpperCase();
+                    let jwbHuruf = jwbSiswaRaw.toString().trim().toUpperCase();
                     
                     if(jwbHuruf === kunciHuruf) {
                         totalSkor += bobotSoal;
+                        status = "Benar";
+                        statusClass = "text-correct";
+                    }
+                    // Konversi huruf ke teks opsi penuh jika siswa menjawab
+                    if (jwbHuruf && s.opsi && s.opsi[jwbHuruf]) {
+                        jwbSiswaTeks = jwbHuruf + ". " + s.opsi[jwbHuruf];
+                    } else if (!jwbHuruf) {
+                        jwbSiswaTeks = "<em>Tidak dijawab</em>";
                     }
                 } else {
-                    // Penilaian untuk Essay / HOTS
-                    if(jwbSiswa.toLowerCase().trim() === kunciDB.toString().toLowerCase().trim()) {
+                    if(jwbSiswaRaw.toLowerCase().trim() === kunciDB.toString().toLowerCase().trim()) {
                         totalSkor += bobotSoal;
+                        status = "Benar";
+                        statusClass = "text-correct";
                     }
+                    if(!jwbSiswaRaw) jwbSiswaTeks = "<em>Tidak dijawab</em>";
                 }
+
+                // Bangun HTML untuk transparansi tiap soal
+                reviewHTML += `
+                    <div class="result-item">
+                        <p style="margin-top:0;"><strong>Soal ${i + 1}:</strong><br> ${s.soal}</p>
+                        <div style="background: #fff; padding: 10px; border-left: 4px solid var(--primary-color);">
+                            <p style="margin: 0 0 5px 0;">Jawaban Siswa : ${jwbSiswaTeks}</p>
+                            <p style="margin: 0 0 5px 0;">Kunci Jawaban : <strong>${kunciDB}</strong></p>
+                            <p style="margin: 0;">Status : <span class="${statusClass}">${status}</span> (Bobot ${bobotSoal})</p>
+                        </div>
+                    </div>
+                `;
             });
 
-            // PERBAIKAN 3: Cegah nilai NaN (Not a Number) jika bank soal kosong/error
             let nilaiAkhir = totalMax > 0 ? Math.round((totalSkor / totalMax) * 100) : 0;
+            
+            // Set Data Tampilan Hasil
+            document.getElementById('res-nama').innerText = sessionStorage.getItem('siswa_nama');
+            document.getElementById('res-nis').innerText = sessionStorage.getItem('siswa_nis');
+            document.getElementById('res-mapel').innerText = bankSoalLokal[0].mapel;
+            document.getElementById('res-nilai').innerText = nilaiAkhir;
+            document.getElementById('review-container').innerHTML = reviewHTML;
             
             const payload = {
                 action: "simpanNilai", 
@@ -538,8 +596,12 @@
                 nama: sessionStorage.getItem('siswa_nama'),
                 mapel: bankSoalLokal[0].mapel, 
                 nilai: nilaiAkhir, 
-                jawaban: jawabanSiswa
+                jawaban: jawabanSiswa // Data JSON rincian akan dikirim ke DB jika server menangkapnya
             };
+
+            // Tampilkan UI Hasil sebelum mengirim data agar siswa tidak merasa nge-hang
+            document.getElementById('exam-interface').style.display = 'none';
+            document.getElementById('result-interface').style.display = 'block';
 
             try {
                 await fetch(GAS_URL, { 
@@ -547,11 +609,10 @@
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(payload) 
                 });
-                alert(`Ujian Selesai! Nilai Anda: ${nilaiAkhir}`);
             } catch(e) { 
-                alert("Nilai telah dikalkulasi: " + nilaiAkhir + " (namun gagal terhubung ke server untuk menyimpan)."); 
+                console.error("Gagal terhubung ke server untuk menyimpan nilai, tapi hasil sudah di kalkulasi lokal.");
             }
-            logout();
+            // Logout kita pindahkan ke tombol di lembar transparansi, sehingga tidak otomatis logout.
         }
     </script>
     <div class="footer-sekolah">Aplikasi ini diKembangkan Oleh TIM SANG21 CBT | SDN 21 Sanggalea</div>
