@@ -86,6 +86,22 @@
                 </select>
             </div>
 
+            <!-- PILIHAN MATA PELAJARAN KHUSUS SISWA -->
+            <div id="container-mapel-login">
+                <label style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Pilih Mata Pelajaran:</label>
+                <select id="login-mapel" class="form-control">
+                    <option value="">-- Pilih Mata Pelajaran --</option>
+                    <option value="MATEMATIKA">Matematika</option>
+                    <option value="IPA">IPA</option>
+                    <option value="IPS">IPS</option>
+                    <option value="BAHASA INDONESIA">Bahasa Indonesia</option>
+                    <option value="PENDIDIKAN PANCASILA">Pendidikan Pancasila</option>
+                    <option value="PJOK">PJOK</option>
+                    <option value="AGAMA ISLAM">Pendidikan Agama Islam</option>
+                    <option value="SENI BUDAYA">Seni Budaya</option>
+                </select>
+            </div>
+
             <label style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Nomor Induk (NIS / NIP):</label>
             <input type="text" id="login-id" class="form-control" placeholder="Ketik NIS Anda di sini...">
             
@@ -163,7 +179,16 @@
             </select>
             
             <label>Mata Pelajaran:</label>
-            <input type="text" id="soal-mapel" class="form-control" placeholder="Contoh: MATEMATIKA, IPA">
+            <select id="soal-mapel" class="form-control">
+                <option value="MATEMATIKA">MATEMATIKA</option>
+                <option value="IPA">IPA</option>
+                <option value="IPS">IPS</option>
+                <option value="BAHASA INDONESIA">BAHASA INDONESIA</option>
+                <option value="PENDIDIKAN PANCASILA">PENDIDIKAN PANCASILA</option>
+                <option value="PJOK">PJOK</option>
+                <option value="AGAMA ISLAM">AGAMA ISLAM</option>
+                <option value="SENI BUDAYA">SENI BUDAYA</option>
+            </select>
             
             <label>Jenis Soal:</label>
             <select id="soal-jenis" class="form-control" onchange="toggleOpsiJawaban()">
@@ -249,7 +274,7 @@
                 <tr><td><strong>Nilai Akhir</strong></td><td>:</td><td><strong id="res-nilai" style="font-size: 24px; color: var(--success-color);">-</strong> / 100</td></tr>
             </table>
             
-            <h3 style="margin-bottom: 15px;">Rincian Pekerjaan Murid</h3>
+            <h3 style="margin-bottom: 15px;">Rincian Pekerjaan (Bahan Umpan Balik Guru / Remedial)</h3>
             <div id="review-container"></div>
         </div>
     </div>
@@ -265,6 +290,7 @@
             const role = document.getElementById('login-role').value;
             document.getElementById('login-id').placeholder = role === 'guru' ? "Ketik NIP..." : "Ketik NIS...";
             document.getElementById('container-kelas-login').style.display = role === 'siswa' ? 'block' : 'none';
+            document.getElementById('container-mapel-login').style.display = role === 'siswa' ? 'block' : 'none';
         }
 
         async function prosesLogin(e) {
@@ -282,15 +308,23 @@
                     if(cekGuru) masukSebagaiGuru(cekGuru.nama); else alert("NIP tidak terdaftar di sistem.");
                 } else {
                     const kelasInput = document.getElementById('login-kelas').value;
+                    const mapelInput = document.getElementById('login-mapel').value;
+                    
                     if(!kelasInput) {
                         alert("Silakan pilih kelas Anda terlebih dahulu!");
                         btn.innerHTML = 'Masuk Sistem'; btn.disabled = false;
                         return;
                     }
+                    if(!mapelInput) {
+                        alert("Silakan pilih mata pelajaran terlebih dahulu!");
+                        btn.innerHTML = 'Masuk Sistem'; btn.disabled = false;
+                        return;
+                    }
+
                     const res = await fetch(GAS_URL + "?action=getSiswa");
                     dataSiswaLokal = await res.json();
                     const cekSiswa = dataSiswaLokal.find(s => String(s.nis) === idInput);
-                    if(cekSiswa) masukSebagaiSiswa(cekSiswa.nama, cekSiswa.nis, kelasInput); else alert("NIS tidak terdaftar.");
+                    if(cekSiswa) masukSebagaiSiswa(cekSiswa.nama, cekSiswa.nis, kelasInput, mapelInput); else alert("NIS tidak terdaftar.");
                 }
             } catch(err) { alert("Gagal terhubung ke database. Periksa koneksi/URL GAS."); }
             btn.innerHTML = 'Masuk Sistem'; btn.disabled = false;
@@ -304,10 +338,11 @@
             loadBankSoal();
         }
 
-        function masukSebagaiSiswa(nama, nis, kelas) {
+        function masukSebagaiSiswa(nama, nis, kelas, mapel) {
             sessionStorage.setItem('siswa_nama', nama); 
             sessionStorage.setItem('siswa_nis', nis);
             sessionStorage.setItem('siswa_kelas', kelas);
+            sessionStorage.setItem('siswa_mapel', mapel);
             
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('sidebar').style.display = 'flex';
@@ -490,18 +525,22 @@
                 bankSoalLokal = await res.json();
                 
                 const siswaKelas = sessionStorage.getItem('siswa_kelas');
+                const siswaMapel = sessionStorage.getItem('siswa_mapel');
                 
-                // FILTER SOAL SESUAI KELAS SISWA
-                soalAktifSiswa = bankSoalLokal.filter(s => String(s.kelas).toUpperCase() === String(siswaKelas).toUpperCase());
+                // FILTER SOAL SESUAI KELAS DAN MATA PELAJARAN SISWA
+                soalAktifSiswa = bankSoalLokal.filter(s => 
+                    String(s.kelas).toUpperCase() === String(siswaKelas).toUpperCase() &&
+                    String(s.mapel).toUpperCase() === String(siswaMapel).toUpperCase()
+                );
                 
                 if(!soalAktifSiswa || soalAktifSiswa.length === 0) { 
-                    alert(`Belum ada soal yang tersedia untuk ${siswaKelas}.`); 
+                    alert(`Belum ada soal yang tersedia untuk ${siswaKelas} - ${siswaMapel}.`); 
                     btn.innerHTML = 'Cek Token & Muat Soal'; btn.disabled = false; 
                     return; 
                 }
                 
                 document.getElementById('info-siswa-nama').innerText = sessionStorage.getItem('siswa_nama');
-                document.getElementById('info-mapel').innerText = soalAktifSiswa[0].mapel;
+                document.getElementById('info-mapel').innerText = siswaMapel;
                 document.getElementById('info-kelas').innerText = siswaKelas;
                 document.getElementById('info-jumlah').innerText = soalAktifSiswa.length + " Soal";
                 document.getElementById('panel-konfirmasi').style.display = 'block';
@@ -633,7 +672,7 @@
             document.getElementById('res-nama').innerText = sessionStorage.getItem('siswa_nama');
             document.getElementById('res-kelas').innerText = sessionStorage.getItem('siswa_kelas');
             document.getElementById('res-nis').innerText = sessionStorage.getItem('siswa_nis');
-            document.getElementById('res-mapel').innerText = soalAktifSiswa[0].mapel;
+            document.getElementById('res-mapel').innerText = sessionStorage.getItem('siswa_mapel');
             document.getElementById('res-nilai').innerText = nilaiAkhir;
             document.getElementById('review-container').innerHTML = reviewHTML;
             
@@ -642,7 +681,7 @@
                 nis: sessionStorage.getItem('siswa_nis'), 
                 nama: sessionStorage.getItem('siswa_nama'),
                 kelas: sessionStorage.getItem('siswa_kelas'),
-                mapel: soalAktifSiswa[0].mapel, 
+                mapel: sessionStorage.getItem('siswa_mapel'), 
                 nilai: nilaiAkhir, 
                 jawaban: jawabanSiswa 
             };
